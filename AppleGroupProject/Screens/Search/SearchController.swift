@@ -19,11 +19,19 @@ class SearchController: UIViewController {
         tableView.dataSource = self
         return tableView
     }()
+    
+    private var quotes: [Quote] = [] {
+        didSet {
+            self.updateEmptyStateView(for: tableView, with: quotes, message: "Search for quotes here...")
+        }
+    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        quotes = []
         setupNavigationController()
         setupSearchController()
+        setupUI()
     }
     
     private func setupNavigationController() {
@@ -41,15 +49,26 @@ class SearchController: UIViewController {
         navigationItem.searchController = searchController
         navigationItem.hidesSearchBarWhenScrolling = false
     }
+    
+    private func setupUI() {
+        view.addSubview(tableView)
+        
+        tableView.snp.makeConstraints {
+            $0.edges.equalToSuperview()
+        }
+    }
 }
 
 extension SearchController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        0
+        quotes.count
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        UITableViewCell()
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: QuoteCell.reuseID, for: indexPath)
+                as? QuoteCell else { return UITableViewCell() }
+        cell.set(quote: quotes[indexPath.row])
+        return cell
     }
 }
 

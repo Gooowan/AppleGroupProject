@@ -41,7 +41,7 @@ class QuoteCell: UITableViewCell {
         }
     }
     
-    func configure(quote: Quote) {
+    func set(quote: Quote) {
         containerView.configure(quote: quote)
     }
 }

@@ -8,18 +8,25 @@
 import UIKit
 import SnapKit
 
-private let quotes: [Quote] = [
+private let quoteStorage: [Quote] = [
     Quote(text: "United we stand. Divided we fall", author: "Captain America", color: .purple, category: .inspiration),
     Quote(text: "You must be the change you wish to see in the world", author: "Mahatma Gandhi", color: .blue, category: .history),
     Quote(text: "The only thing we have to fear is fear itself", author: "Franklin D. Roosevelt", color: .yellow, category: .politics),
-    Quote(text: "Darkness cannot drive out darkness: only light can do that. Hate cannot drive out hate: only love can do that", author: "Martin Luther King Jr.", color: .orange, category: .politics),
+    Quote(text: "Darkness cannot drive out darkness: only light can do that. Hate cannot drive out hate: only love can do that", author: "Martin Luther King", color: .orange, category: .politics),
     Quote(text: "Well done is better than well said", author: "Benjamin Franklin", color: .yellow, category: .motivation)
 ]
 
 class QuoteListController: UIViewController {
     
-    private var segmentedControlView: CategorySegmentedControlView = {
-        CategorySegmentedControlView(items: QuoteCategory.self)
+    private lazy var collectionView: UICollectionView = {
+        let layout = CategotyCollectionViewFlowLayout()
+        let collectionView = UICollectionView(frame: .zero, collectionViewLayout: layout)
+        collectionView.showsHorizontalScrollIndicator = false
+        collectionView.delegate = self
+        collectionView.dataSource = self
+        collectionView.register(CategoryCell.self, forCellWithReuseIdentifier: CategoryCell.reuseID)
+        
+        return collectionView
     }()
     
     private lazy var tableView: UITableView = {
@@ -32,43 +39,68 @@ class QuoteListController: UIViewController {
         return tableView
     }()
     
+    private var quotes: [Quote] = [] {
+        didSet {
+            updateEmptyStateView(for: tableView, with: quotes, message: "No quotes were saved yet..")
+        }
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.quotes = quoteStorage
         setupNavigationController()
         setupSearchController()
+        setupTableHeaderView()
         setupUI()
     }
     
     private func setupNavigationController() {
         navigationItem.titleView = LogoImageView()
         navigationController?.navigationBar.barTintColor = .systemBackground
-        navigationController?.navigationBar.isTranslucent = false
-        navigationController?.hidesBarsOnSwipe = true
     }
     
     private func setupSearchController() {
         let searchController = UISearchController()
+        searchController.searchBar.placeholder = "Search for a quote..."
         searchController.searchResultsUpdater = self
         searchController.searchBar.delegate = self
-        searchController.searchBar.placeholder = "Search for a quote..."
+        searchController.obscuresBackgroundDuringPresentation = false
+        searchController.hidesNavigationBarDuringPresentation = false
         navigationItem.searchController = searchController
-        navigationItem.hidesSearchBarWhenScrolling = false
+
+    }
+    
+    private func setupTableHeaderView() {
+        let headerView = UIView(frame: CGRect(x: 0, y: 0, width: view.bounds.width, height: 50))
+        headerView.addSubview(collectionView)
+        
+        collectionView.snp.makeConstraints {
+            $0.edges.equalToSuperview().inset(10)
+        }
+        
+        tableView.tableHeaderView = headerView
     }
 
     private func setupUI() {
-        [segmentedControlView, tableView].forEach(view.addSubview(_:))
-        
-        segmentedControlView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide)
-            $0.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(50)
-        }
+        view.addSubview(tableView)
         
         tableView.snp.makeConstraints {
-            $0.top.equalTo(segmentedControlView.snp.bottom).offset(10)
-            $0.leading.trailing.equalTo(segmentedControlView)
-            $0.bottom.equalToSuperview()
+            $0.top.leading.trailing.bottom.equalToSuperview()
         }
+    }
+}
+
+extension QuoteListController: UICollectionViewDelegate, UICollectionViewDataSource {
+    func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        QuoteCategory.allCases.count
+    }
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        guard let cell = collectionView.dequeueReusableCell(withReuseIdentifier: CategoryCell.reuseID, for: indexPath)
+                as? CategoryCell else { return UICollectionViewCell() }
+        let category = QuoteCategory.allCases[indexPath.row].rawValue
+        cell.set(category)
+        return cell
     }
 }
 
@@ -80,7 +112,7 @@ extension QuoteListController: UITableViewDelegate, UITableViewDataSource {
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(withIdentifier: QuoteCell.reuseID, for: indexPath)
                 as? QuoteCell else { return UITableViewCell() }
-        cell.configure(quote: quotes[indexPath.row])
+        cell.set(quote: quotes[indexPath.row])
         return cell
     }
 }
