@@ -20,9 +20,22 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Saved Quotes"
+        setupNavBar()
         view.backgroundColor = .white
         setupTableView()
+        
+    }
+    
+    private func setupNavBar() {
+        title = "Saved Quotes"
+        navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
+    }
+    
+    @objc private func addButtonTapped() {
+        let controller = AddQuoteViewController()
+        let navController = UINavigationController(rootViewController: controller)
+        navController.modalPresentationStyle = .formSheet
+        self.present(navController, animated: true)
     }
 
     private func setupTableView() {

@@ -7,7 +7,7 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        let homeScreenVC = HomeScreenViewController()
+        let homeScreenVC = UINavigationController(rootViewController: HomeScreenViewController())
         let searchVC = SearchViewController()
         let settingsVC = SettingsViewController()
         

@@ -60,7 +60,7 @@ final class EntitiesManager {
 
 
 
-Message Andrii Klykavka, David Bakalov ITBA26, Kseniia Hanziuk
+//Message Andrii Klykavka, David Bakalov ITBA26, Kseniia Hanziuk
 
 
 
