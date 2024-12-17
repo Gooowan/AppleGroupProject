@@ -10,7 +10,6 @@ import SnapKit
 
 class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
-    // MARK: - UI Components
     private let searchTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter text, author, or genre"
@@ -26,15 +25,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }()
 
     private let tableView = UITableView()
-
-    // MARK: - Data
-    var allQuotes: [Quote] = [
-        Quote(text: "The only way to do great work is to love what you do.", author: "Steve Jobs", genre: "Business"),
-        Quote(text: "Life is what happens when you're busy making other plans.", author: "John Lennon", genre: "Life"),
-        Quote(text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill", genre: "Motivation"),
-        Quote(text: "Innovation distinguishes between a leader and a follower.", author: "Steve Jobs", genre: "Technology")
-    ]
-
+    var allQuotes: [Quote] = EntitiesManager.shared.quotes
     var filteredQuotes: [Quote] = []
 
     override func viewDidLoad() {
@@ -79,17 +70,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     }
 
     @objc private func performSearch() {
-        guard let query = searchTextField.text?.lowercased(), !query.isEmpty else {
-            filteredQuotes = allQuotes
+        guard let query = searchTextField.text else {
+            filteredQuotes = EntitiesManager.shared.quotes
             tableView.reloadData()
             return
         }
-
-        filteredQuotes = allQuotes.filter { quote in
-            quote.text.lowercased().contains(query) ||
-            quote.author.lowercased().contains(query) ||
-            quote.genre.lowercased().contains(query)
-        }
+        
+        filteredQuotes = EntitiesManager.shared.searchQuotes(query: query)
         tableView.reloadData()
     }
 

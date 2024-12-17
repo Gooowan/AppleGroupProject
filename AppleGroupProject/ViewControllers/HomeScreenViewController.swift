@@ -11,8 +11,7 @@ import SnapKit
 class HomeScreenViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView()
-    var savedQuotes: [Quote] = entitiesManager.quotes
-
+    var savedQuotes: [Quote] = EntitiesManager.shared.quotes
 
     override func viewDidLoad() {
         super.viewDidLoad()
