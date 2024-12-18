@@ -8,7 +8,13 @@
 import UIKit
 import SnapKit
 
+protocol AddQuoteDelegate: AnyObject {
+    func didAddQuote(_ quote: Quote)
+}
+
 class AddQuoteViewController: UIViewController {
+    
+    weak var delegate: AddQuoteDelegate?
 
     private let quoteTextFieldContainerView: UIView = {
         let view = UIView()
@@ -93,7 +99,13 @@ class AddQuoteViewController: UIViewController {
         let newQuote = Quote(text: text, author: author, genre: genre)
         EntitiesManager.shared.addQuote(quote: newQuote)
         
-        self.dismiss(animated: true)
+        let alert = UIAlertController(title: "Success", message: "Your quote has been saved!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.dismiss(animated: true)
+            }
+        }
     }
     
     private func setupUI() {

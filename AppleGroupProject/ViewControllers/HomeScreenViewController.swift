@@ -33,6 +33,7 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
     
     @objc private func addButtonTapped() {
         let controller = AddQuoteViewController()
+        controller.delegate = self
         let navController = UINavigationController(rootViewController: controller)
         navController.modalPresentationStyle = .formSheet
         self.present(navController, animated: true)
@@ -63,5 +64,19 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
         let quote = savedQuotes[indexPath.row]
         cell.configure(with: quote)
         return cell
+    }
+    
+    @objc private func handleQuoteAdded(notification: Notification) {
+        if let quote = notification.userInfo?["quote"] as? Quote {
+            savedQuotes.append(quote)
+            tableView.insertRows(at: [IndexPath(row: savedQuotes.count - 1, section: 0)], with: .automatic)
+        }
+    }
+}
+
+extension HomeScreenViewController: AddQuoteDelegate {
+    func didAddQuote(_ quote: Quote) {
+        savedQuotes = EntitiesManager.shared.quotes
+        tableView.reloadData()
     }
 }

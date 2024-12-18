@@ -13,10 +13,7 @@ final class EntitiesManager {
     var users: [User] = []
     var quotes: [Quote] = []
     
-    private init() {
-        users = loadUsers()
-        quotes = loadQuotes()
-    }
+    private init() {}
     
     func loadUsers() -> [User] {
         // load all users from backend
@@ -43,6 +40,11 @@ final class EntitiesManager {
     }
     
     func addQuote(quote: Quote) {
+        guard !quotes.contains(where: { $0.text == quote.text && $0.author == quote.author }) else {
+                print("Duplicate quote detected")
+                return
+            }
+        
         quotes.append(quote)
         // add requesting for backend
     }
