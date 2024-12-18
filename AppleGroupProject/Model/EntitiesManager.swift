@@ -1,7 +1,6 @@
 import Foundation
 import Combine
 
-
 final class EntitiesManager {
     static let shared = EntitiesManager()
     
@@ -11,13 +10,11 @@ final class EntitiesManager {
     private let apiService = FetchService()
     private var cancellables = Set<AnyCancellable>()
     
-
     private init() {
         loadUsers()
         fetchAndLoadQuotes()
     }
 
-    
     func loadUsers() {
         apiService.fetchAllUsers()
             .sink(receiveCompletion: { completion in
@@ -60,7 +57,6 @@ final class EntitiesManager {
         // add requesting for backend
     }
     
-
     func addQuote(quoteArg: QuoteCreationStruct) {
         apiService.addQuote(quote: quoteArg)
                     .sink(receiveCompletion: { completion in
