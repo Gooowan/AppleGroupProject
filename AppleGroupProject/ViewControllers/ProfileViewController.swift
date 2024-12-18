@@ -1,10 +1,3 @@
-//
-//  SettingsViewController.swift
-//  AppleGroupProject
-//
-//  Created by Ivan Solomatin on 17.12.2024.
-//
-
 import UIKit
 import SnapKit
 
@@ -39,6 +32,12 @@ class ProfileViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
+    
+    private var usernameTextField: UITextField!
+    private var passwordTextField: UITextField!
+    
+    private var isLoggedIn = false
+    private var currentUser: User?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -93,42 +92,77 @@ class ProfileViewController: UIViewController {
             $0.top.equalTo(profileImageView.snp.bottom).offset(20)
             $0.left.right.equalToSuperview().inset(20)
         }
+        
+        usernameTextField = UITextField()
+        usernameTextField.placeholder = "Username"
+        usernameTextField.borderStyle = .roundedRect
+        
+        passwordTextField = UITextField()
+        passwordTextField.placeholder = "Password"
+        passwordTextField.borderStyle = .roundedRect
+        passwordTextField.isSecureTextEntry = true
+        
+        let loginButton = UIButton(type: .system)
+        loginButton.setTitle("Login", for: .normal)
+        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        
+        loginStackView.addArrangedSubview(usernameTextField)
+        loginStackView.addArrangedSubview(passwordTextField)
+        loginStackView.addArrangedSubview(loginButton)
     }
     
     private func updateUIForLoggedInState() {
-        // Example logic to check login state
-        let isLoggedIn = false // Replace with actual login state logic
-        
-        if isLoggedIn {
-            usernameLabel.text = "Username: JohnDoe" // Replace with actual username
-            quoteCountLabel.text = "Quotes: 42"      // Replace with actual quote count
+        if isLoggedIn, let user = currentUser {
+            usernameLabel.text = "Username: \(user.username)"
+            quoteCountLabel.text = "Created Quotes: \(user.createdQuotes.count)"
             loginStackView.isHidden = true
+            profileImageView.tintColor = .systemBlue
         } else {
             usernameLabel.text = nil
             quoteCountLabel.text = nil
             loginStackView.isHidden = false
-            
-            let emailTextField = UITextField()
-            emailTextField.placeholder = "Email"
-            emailTextField.borderStyle = .roundedRect
-            
-            let passwordTextField = UITextField()
-            passwordTextField.placeholder = "Password"
-            passwordTextField.borderStyle = .roundedRect
-            passwordTextField.isSecureTextEntry = true
-            
-            let loginButton = UIButton(type: .system)
-            loginButton.setTitle("Login", for: .normal)
-            loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-            
-            loginStackView.addArrangedSubview(emailTextField)
-            loginStackView.addArrangedSubview(passwordTextField)
-            loginStackView.addArrangedSubview(loginButton)
+            profileImageView.tintColor = .gray
         }
     }
     
     @objc private func handleLogin() {
-        // Handle login logic here
-        print("Login button tapped")
+        guard let username = usernameTextField.text, !username.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            showAlert(message: "Please fill in all fields.")
+            return
+        }
+        
+        if let user = authenticateUser(username: username, password: password) {
+            isLoggedIn = true
+            currentUser = user
+            updateUIForLoggedInState()
+        } else {
+            showAlert(message: "Invalid email or password.")
+        }
+    }
+    
+    private func authenticateUser(username: String, password: String) -> User? {
+        // Mock user database
+        let users = [
+            User(
+                id: "1",
+                username: "JohnDoe",
+                password: "password123",
+                likedQuotes: [
+                    Quote(text: "Be yourself; everyone else is already taken.", author: "Oscar Wilde", genre: "Motivational", id: "1")
+                ],
+                createdQuotes: [
+                    Quote(text: "The only limit to our realization of tomorrow is our doubts of today.", author: "Franklin D. Roosevelt", genre: "Inspirational", id: "2")
+                ]
+            )
+        ]
+        
+        return users.first { $0.username == username && $0.password == password }
+    }
+    
+    private func showAlert(message: String) {
+        let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
     }
 }
