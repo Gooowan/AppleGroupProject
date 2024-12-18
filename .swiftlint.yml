@@ -2,6 +2,8 @@ disabled_rules:
   - trailing_whitespace
   - identifier_name
   - line_length
+  - unneeded_synthesized_initializer
+
 included:
   - AppleGroupProject
   - AppleGroupProjectTest

@@ -19,7 +19,6 @@ final class EntitiesManager {
         fetchAndLoadQuotes()
     }
     
-
     func loadUsers() {
         apiService.fetchAllUsers()
             .sink(receiveCompletion: { completion in
