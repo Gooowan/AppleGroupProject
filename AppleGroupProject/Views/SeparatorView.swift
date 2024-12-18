@@ -19,7 +19,7 @@ class SeparatorView: UIView {
     }
     
     private func setup() {
-        backgroundColor = .lightGray
+        applyBackgroundTheme()
         translatesAutoresizingMaskIntoConstraints = false
     }
 }

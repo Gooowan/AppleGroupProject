@@ -20,6 +20,7 @@ class GenreDisplayView: UIView {
         label.lineBreakMode = .byCharWrapping
         label.minimumScaleFactor = 0.9
         label.adjustsFontSizeToFitWidth = true
+        label.applyTextTheme()
         return label
     }()
     
@@ -59,6 +60,11 @@ class GenreDisplayView: UIView {
             }
             .store(in: &cancellables)
         
+        applySecondaryBackgroundTheme()
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
+        backgroundColor = .secondarySystemBackground
+
         addSubview(stackView)
         
         stackView.snp.makeConstraints {

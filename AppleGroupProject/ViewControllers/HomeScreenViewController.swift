@@ -17,10 +17,9 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
-        view.backgroundColor = .white
+        setupUI()
         setupTableView()
         ObserverChanges()
-        
     }
 
     private func ObserverChanges() {
@@ -51,6 +50,10 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
         navController.modalPresentationStyle = .formSheet
         self.present(navController, animated: true)
     }
+    
+    private func setupUI() {
+        view.applyBackgroundTheme()
+    }
 
     private func setupTableView() {
         view.addSubview(tableView)
@@ -59,6 +62,7 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
         tableView.register(QuoteCell.self, forCellReuseIdentifier: "QuoteCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 120
+        tableView.applyBackgroundTheme()
 
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()

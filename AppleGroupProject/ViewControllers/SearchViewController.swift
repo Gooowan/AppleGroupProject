@@ -14,6 +14,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let textField = UITextField()
         textField.placeholder = "Enter text, author, or genre"
         textField.borderStyle = .roundedRect
+        textField.applySecBackgroundTheme()
         return textField
     }()
 
@@ -21,6 +22,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let button = UIButton(type: .system)
         button.setTitle("Search", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
+        button.setTitleColor(ThemeColor.thirdColor, for: .normal)
         return button
     }()
 
@@ -31,13 +33,24 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Search Quotes"
-        view.backgroundColor = .white
 
         setupUI()
+        addGestures()
         searchButton.addTarget(self, action: #selector(performSearch), for: .touchUpInside)
+    }
+    
+    private func addGestures() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapScreen))
+        view.addGestureRecognizer(tap)
+        tableView.addGestureRecognizer(tap)
+    }
+    
+    @objc private func didTapScreen() {
+        view.endEditing(true)
     }
 
     private func setupUI() {
+        view.applyBackgroundTheme()
         view.addSubview(searchTextField)
         view.addSubview(searchButton)
         view.addSubview(tableView)
@@ -47,8 +60,8 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         tableView.register(QuoteCell.self, forCellReuseIdentifier: "QuoteCell")
         tableView.rowHeight = UITableView.automaticDimension
         tableView.estimatedRowHeight = 100
+        tableView.applyBackgroundTheme()
 
-        // Layout constraints
         searchTextField.snp.makeConstraints { make in
             make.top.equalTo(view.safeAreaLayoutGuide).offset(10)
             make.leading.equalToSuperview().offset(16)

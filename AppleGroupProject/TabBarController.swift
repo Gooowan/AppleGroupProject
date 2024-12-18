@@ -7,6 +7,8 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UITabBar.appearance().tintColor = ThemeColor.thirdColor
+        
         let homeScreenVC = UINavigationController(rootViewController: HomeScreenViewController())
         let searchVC = UINavigationController(rootViewController: SearchViewController())
         let profileVC = UINavigationController(rootViewController: ProfileViewController())

@@ -18,6 +18,7 @@ class LanguageDisplayView: UIView {
         label.lineBreakMode = .byCharWrapping
         label.minimumScaleFactor = 0.9
         label.adjustsFontSizeToFitWidth = true
+        label.applyTextTheme()
         return label
     }()
     
@@ -48,6 +49,10 @@ class LanguageDisplayView: UIView {
     }
     
     private func setup() {
+        applySecondaryBackgroundTheme()
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
+        backgroundColor = .secondarySystemBackground
         addSubview(stackView)
         
         stackView.snp.makeConstraints {

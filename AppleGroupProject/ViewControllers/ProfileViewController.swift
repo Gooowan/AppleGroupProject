@@ -17,6 +17,7 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 18, weight: .medium)
         label.textAlignment = .center
+        label.applySecondaryTextTheme()
         return label
     }()
 
@@ -24,6 +25,7 @@ class ProfileViewController: UIViewController {
         let label = UILabel()
         label.font = .systemFont(ofSize: 16, weight: .regular)
         label.textAlignment = .center
+        label.applySecondaryTextTheme()
         return label
     }()
 
@@ -34,21 +36,43 @@ class ProfileViewController: UIViewController {
         return stackView
     }()
 
-    private var usernameTextField: UITextField!
-    private var passwordTextField: UITextField!
+    private var usernameTextField: UITextField = {
+        let textField = UITextField()
+        let placeholderText = "Username"
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
+        ]
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        textField.borderStyle = .roundedRect
+        textField.applySecBackgroundTheme()
+        return textField
+    }()
+    
+    private var passwordTextField: UITextField = {
+        let textField = UITextField()
+        let placeholderText = "Password"
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
+        ]
+        textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        textField.borderStyle = .roundedRect
+        textField.applySecBackgroundTheme()
+        return textField
+    }()
 
-    private var cancellables = Set<AnyCancellable>() // Added here
+    private var cancellables = Set<AnyCancellable>()
 
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         setupUI()
+        addGestures()
         bindEntitiesManager()
     }
 
     private func setupNavBar() {
         title = "Profile"
-        view.backgroundColor = .systemBackground
+        view.applyBackgroundTheme()
 
         let settingsButton = UIBarButtonItem(
             image: UIImage(systemName: "gear"),
@@ -61,8 +85,17 @@ class ProfileViewController: UIViewController {
 
     @objc private func settingsButtonTapped() {
         let settingsVC = SettingsPopupViewController()
-        settingsVC.modalPresentationStyle = .popover
-        present(settingsVC, animated: true)
+        settingsVC.modalPresentationStyle = .pageSheet
+        navigationController?.pushViewController(settingsVC, animated: true)
+    }
+    
+    private func addGestures() {
+        let tap = UITapGestureRecognizer(target: self, action: #selector(didTapView))
+        view.addGestureRecognizer(tap)
+    }
+    
+    @objc private func didTapView() {
+        view.endEditing(true)
     }
 
     private func setupUI() {
@@ -93,18 +126,13 @@ class ProfileViewController: UIViewController {
             $0.left.right.equalToSuperview().inset(20)
         }
 
-        usernameTextField = UITextField()
-        usernameTextField.placeholder = "Username"
-        usernameTextField.borderStyle = .roundedRect
-
-        passwordTextField = UITextField()
-        passwordTextField.placeholder = "Password"
-        passwordTextField.borderStyle = .roundedRect
-        passwordTextField.isSecureTextEntry = true
-
+        view.addSubview(usernameTextField)
+        view.addSubview(passwordTextField)
+        
         let loginButton = UIButton(type: .system)
         loginButton.setTitle("Login", for: .normal)
         loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        loginButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
 
         loginStackView.addArrangedSubview(usernameTextField)
         loginStackView.addArrangedSubview(passwordTextField)

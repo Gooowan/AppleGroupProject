@@ -27,6 +27,7 @@ class AddQuoteViewController: UIViewController {
         textView.tintColor = UIColor.label
         textView.textColor = UIColor.label
         textView.translatesAutoresizingMaskIntoConstraints = false
+        textView.applySecondaryBackgroundTheme()
         return textView
     }()
     
@@ -36,12 +37,19 @@ class AddQuoteViewController: UIViewController {
     
     private var authorTextField: UITextField = {
         let field = UITextField()
-        field.placeholder = "Author..."
+        let placeholderText = "Author..."
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
+        ]
+        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+
+        
         field.borderStyle = .none
         field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         field.tintColor = UIColor.label
         field.textColor = UIColor.label
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.applySecondaryBackgroundTheme()
         return field
     }()
     
@@ -51,12 +59,18 @@ class AddQuoteViewController: UIViewController {
 
     private var genreTextField: UITextField = {
         let field = UITextField()
-        field.placeholder = "Genre (e.g., Inspiration, Love, Humor)"
+        let placeholderText = "Genre(Movie, Politics)...."
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
+        ]
+        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        
         field.borderStyle = .none
         field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         field.tintColor = UIColor.label
         field.textColor = UIColor.label
         field.translatesAutoresizingMaskIntoConstraints = false
+        field.applySecondaryBackgroundTheme()
         return field
     }()
 
@@ -105,12 +119,13 @@ class AddQuoteViewController: UIViewController {
     }
     
     private func setupUI() {
+        view.applyBackgroundTheme()
         view.addSubview(quoteTextFieldContainerView)
         
         quoteTextFieldContainerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             $0.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(280)
+            $0.height.equalTo(290)
         }
         
         quoteTextFieldContainerView.addSubview(quoteTextView)

@@ -13,9 +13,15 @@ final class AppConfig {
     
     private init() {}
     
-    @Published var isGenresHidden: Bool = true {
+    @Published var isGenresHidden: Bool = true
+    @Published var theme: Theme = .light {
         didSet {
-            print("Changed value")
+            print("Theme changed")
         }
     }
+}
+
+enum Theme {
+    case light
+    case dark
 }
