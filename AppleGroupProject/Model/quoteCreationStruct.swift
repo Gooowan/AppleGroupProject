@@ -6,9 +6,9 @@
 //
 
 struct QuoteCreationStruct: Encodable {
-    var username: String;
-    var text: String;
-    var genre: String;
+    var username: String
+    var text: String
+    var genre: String
     
     init(username: String, text: String, genre: String) {
         self.username = username

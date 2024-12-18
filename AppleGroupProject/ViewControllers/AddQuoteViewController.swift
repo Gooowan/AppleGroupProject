@@ -95,9 +95,8 @@ class AddQuoteViewController: UIViewController {
             present(alert, animated: true)
             return
         }
-        
-        let newQuote = Quote(text: text, author: author, genre: genre)
-        EntitiesManager.shared.addQuote(quote: newQuote)
+        let newQuote = QuoteCreationStruct(username: author, text: text, genre: genre)
+        EntitiesManager.shared.addQuote(quoteArg: newQuote)
         
         let alert = UIAlertController(title: "Success", message: "Your quote has been saved!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
