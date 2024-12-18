@@ -27,4 +27,15 @@ extension UIView {
             }
             .store(in: &UIView.extensionCancellables)
     }
+    
+    func bounceAnimation(scale: CGFloat = 1.2, duration: Double = 0.1) {
+        UIView.animate(withDuration: duration,
+                       animations: {
+            self.transform = CGAffineTransform(scaleX: scale, y: scale)
+        }) { _ in
+            UIView.animate(withDuration: duration) {
+                self.transform = .identity
+            }
+        }
+    }
 }

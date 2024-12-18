@@ -55,6 +55,7 @@ class ThemeDisplayView: UIView {
         layer.masksToBounds = true
         backgroundColor = .secondarySystemBackground
         
+        settingSwitch.addTarget(self, action: #selector(didChangeSwitch), for: .touchUpInside)
         settingSwitch.isOn = AppConfig.shared.theme == .dark ? true : false
         settingSwitch.isOnPublisher
             .sink { isOn in
@@ -66,5 +67,9 @@ class ThemeDisplayView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(10)
         }
+    }
+    
+    @objc func didChangeSwitch() {
+        self.bounceAnimation(scale: 1.05, duration: 0.1)
     }
 }

@@ -52,6 +52,7 @@ class GenreDisplayView: UIView {
     
     private func setup() {
         
+        settingSwitch.addTarget(self, action: #selector(didChangeSwitch), for: .touchUpInside)
         settingSwitch.isOn = AppConfig.shared.isGenresHidden
         
         settingSwitch.isOnPublisher
@@ -70,5 +71,9 @@ class GenreDisplayView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(10)
         }
+    }
+    
+    @objc func didChangeSwitch() {
+        self.bounceAnimation(scale: 1.05, duration: 0.1)
     }
 }

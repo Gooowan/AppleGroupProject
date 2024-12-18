@@ -8,21 +8,23 @@
 import UIKit
 import SnapKit
 
-class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SearchViewController: UIViewController, UITableViewDataSource, UITableViewDelegate, UITextFieldDelegate {
 
-    private let searchTextField: UITextField = {
+    private lazy var searchTextField: UITextField = {
         let textField = UITextField()
         textField.placeholder = "Enter text, author, or genre"
+        textField.delegate = self
         textField.borderStyle = .roundedRect
         textField.applySecBackgroundTheme()
         return textField
     }()
 
-    private let searchButton: UIButton = {
+    private lazy var searchButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Search", for: .normal)
         button.titleLabel?.font = UIFont.boldSystemFont(ofSize: 16)
         button.setTitleColor(ThemeColor.thirdColor, for: .normal)
+        button.addTarget(self, action: #selector(buttonTapped(_:)), for: .touchUpInside)
         return button
     }()
 
@@ -105,5 +107,13 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let quote = filteredQuotes[indexPath.row]
         cell.configure(with: quote)
         return cell
+    }
+    
+    @objc func buttonTapped(_ sender: UIButton) {
+        sender.bounceAnimation()
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.bounceAnimation()
     }
 }

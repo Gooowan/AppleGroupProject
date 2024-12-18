@@ -2,7 +2,7 @@ import UIKit
 import SnapKit
 import Combine
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, UITextFieldDelegate {
 
     private let profileImageView: UIImageView = {
         let imageView = UIImageView()
@@ -36,25 +36,27 @@ class ProfileViewController: UIViewController {
         return stackView
     }()
 
-    private var usernameTextField: UITextField = {
+    private lazy var usernameTextField: UITextField = {
         let textField = UITextField()
         let placeholderText = "Username"
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
         ]
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        textField.delegate = self
         textField.borderStyle = .roundedRect
         textField.applySecBackgroundTheme()
         return textField
     }()
     
-    private var passwordTextField: UITextField = {
+    private lazy var passwordTextField: UITextField = {
         let textField = UITextField()
         let placeholderText = "Password"
         let placeholderAttributes: [NSAttributedString.Key: Any] = [
             .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
         ]
         textField.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+        textField.delegate = self
         textField.borderStyle = .roundedRect
         textField.applySecBackgroundTheme()
         return textField
@@ -131,7 +133,7 @@ class ProfileViewController: UIViewController {
         
         let loginButton = UIButton(type: .system)
         loginButton.setTitle("Login", for: .normal)
-        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+        loginButton.addTarget(self, action: #selector(handleLogin(_:)), for: .touchUpInside)
         loginButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
 
         loginStackView.addArrangedSubview(usernameTextField)
@@ -172,7 +174,9 @@ class ProfileViewController: UIViewController {
         profileImageView.tintColor = .gray
     }
 
-    @objc private func handleLogin() {
+    @objc private func handleLogin(_ sender: UIButton) {
+        sender.bounceAnimation()
+        
         guard let username = usernameTextField.text, !username.isEmpty,
               let password = passwordTextField.text, !password.isEmpty else {
             showAlert(message: "Please fill in all fields.")
@@ -192,5 +196,9 @@ class ProfileViewController: UIViewController {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+    }
+    
+    func textFieldDidBeginEditing(_ textField: UITextField) {
+        textField.bounceAnimation()
     }
 }

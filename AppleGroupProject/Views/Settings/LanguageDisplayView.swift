@@ -50,6 +50,9 @@ class LanguageDisplayView: UIView {
     
     private func setup() {
         applySecondaryBackgroundTheme()
+        
+        languageSegmentedControl.addTarget(self, action: #selector(didChangeControl), for: .valueChanged)
+        
         layer.cornerRadius = 10
         layer.masksToBounds = true
         backgroundColor = .secondarySystemBackground
@@ -58,5 +61,9 @@ class LanguageDisplayView: UIView {
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(5)
         }
+    }
+    
+    @objc func didChangeControl() {
+        self.bounceAnimation(scale: 1.05, duration: 0.1)
     }
 }
