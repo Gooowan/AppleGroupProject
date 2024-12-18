@@ -200,6 +200,7 @@ class ProfileViewController: UIViewController {
             DispatchQueue.main.async {
                 if success {
                     EntitiesManager.shared.currentUser = username
+                    self.updateUIForLoggedInState()
                 } else {
                     self.showAlert(message: "Invalid email or password.")
                 }
@@ -225,6 +226,8 @@ class ProfileViewController: UIViewController {
         let alert = UIAlertController(title: "Success", message: "Registration successful. You are now logged in.", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
         present(alert, animated: true)
+        
+        updateUIForLoggedInState()
     }
 
 

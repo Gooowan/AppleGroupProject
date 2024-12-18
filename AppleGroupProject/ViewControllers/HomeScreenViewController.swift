@@ -39,7 +39,7 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     private func setupNavBar() {
-        title = "Saved Quotes"
+        title = "All Quotes"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
     }
     
