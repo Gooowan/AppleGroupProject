@@ -7,6 +7,8 @@
 
 import UIKit
 import SnapKit
+import Combine
+import CombineCocoa
 
 class ThemeDisplayView: UIView {
     
@@ -18,12 +20,12 @@ class ThemeDisplayView: UIView {
         label.lineBreakMode = .byCharWrapping
         label.minimumScaleFactor = 0.9
         label.adjustsFontSizeToFitWidth = true
+        label.applyTextTheme()
         return label
     }()
     
     private let settingSwitch: UISwitch = {
         let newSwitch = UISwitch()
-        newSwitch.isOn = false
         return newSwitch
     }()
     
@@ -36,6 +38,8 @@ class ThemeDisplayView: UIView {
         return stack
     }()
     
+    private var cancellables: Set<AnyCancellable> = []
+    
     init() {
         super.init(frame: .zero)
         setup()
@@ -46,8 +50,19 @@ class ThemeDisplayView: UIView {
     }
     
     private func setup() {
-        addSubview(stackView)
+        applySecondaryBackgroundTheme()
+        layer.cornerRadius = 10
+        layer.masksToBounds = true
+        backgroundColor = .secondarySystemBackground
         
+        settingSwitch.isOn = AppConfig.shared.theme == .dark ? true : false
+        settingSwitch.isOnPublisher
+            .sink { isOn in
+                AppConfig.shared.theme = isOn ? .dark : .light
+            }
+            .store(in: &cancellables)
+
+        addSubview(stackView)
         stackView.snp.makeConstraints {
             $0.edges.equalToSuperview().inset(10)
         }

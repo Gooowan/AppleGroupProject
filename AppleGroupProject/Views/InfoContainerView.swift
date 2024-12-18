@@ -19,7 +19,7 @@ class InfoContainerView: UIView {
     }
     
     private func setup() {
-        backgroundColor = .secondarySystemBackground
+        applySecondaryBackgroundTheme()
         layer.masksToBounds = false
         layer.cornerRadius = 8
         translatesAutoresizingMaskIntoConstraints = false

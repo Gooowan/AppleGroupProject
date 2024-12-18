@@ -7,14 +7,30 @@ class MainTabBarController: UITabBarController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
+        UITabBar.appearance().tintColor = ThemeColor.thirdColor
+        
         let homeScreenVC = UINavigationController(rootViewController: HomeScreenViewController())
         let searchVC = UINavigationController(rootViewController: SearchViewController())
-        let settingsVC = UINavigationController(rootViewController: SettingsViewController())
+        let profileVC = UINavigationController(rootViewController: ProfileViewController())
         
-        homeScreenVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
-        searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
-        settingsVC.tabBarItem = UITabBarItem(title: "Settings", image: UIImage(systemName: "gearshape.fill"), tag: 2)
+        homeScreenVC.tabBarItem = UITabBarItem(
+            title: "Home",
+            image: UIImage(systemName: "house.fill"),
+            tag: 0
+        )
         
-        viewControllers = [homeScreenVC, searchVC, settingsVC]
+        searchVC.tabBarItem = UITabBarItem(
+            title: "Search",
+            image: UIImage(systemName: "magnifyingglass"),
+            tag: 1
+        )
+        
+        profileVC.tabBarItem = UITabBarItem(
+            title: "Profile",
+            image: UIImage(systemName: "person"),
+            tag: 2
+        )
+        
+        viewControllers = [homeScreenVC, searchVC, profileVC]
     }
 }

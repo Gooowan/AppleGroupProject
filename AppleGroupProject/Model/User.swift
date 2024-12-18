@@ -22,6 +22,5 @@ class User {
     
     func toggleLikedQuote(quote: Quote) {
         likedQuotes.append(quote)
-        // add requesting for backend
     }
 }

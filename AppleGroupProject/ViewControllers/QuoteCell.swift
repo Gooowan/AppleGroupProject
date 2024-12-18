@@ -15,21 +15,21 @@ class QuoteCell: UITableViewCell {
         let label = UILabel()
         label.numberOfLines = 0
         label.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        label.textColor = .black
+        label.applyTextTheme()
         return label
     }()
     
     private let genreLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.systemFont(ofSize: 14, weight: .medium)
-        label.textColor = .systemBlue
+        label.textColor = ThemeColor.thirdColor
         return label
     }()
 
     private let authorLabel: UILabel = {
         let label = UILabel()
         label.font = UIFont.italicSystemFont(ofSize: 16)
-        label.textColor = .darkGray
+        label.applySecondaryTextTheme()
         return label
     }()
     
@@ -48,13 +48,15 @@ class QuoteCell: UITableViewCell {
     private func setupBindings() {
         AppConfig.shared.$isGenresHidden
             .sink { [weak self] isHidden in
-                self?.genreLabel.textColor = isHidden ? UIColor.systemBlue : UIColor.clear
+                self?.genreLabel.textColor = isHidden ? ThemeColor.thirdColor : UIColor.clear
                 print(isHidden)
             }
             .store(in: &cancellables)
     }
     
     private func setupLayout() {
+        selectionStyle = .none
+        applyBackgroundTheme()
         quoteLabel.snp.makeConstraints { make in
             make.top.equalToSuperview().offset(10)
             make.leading.trailing.equalToSuperview().inset(16)

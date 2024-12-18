@@ -15,6 +15,7 @@ final class EntitiesManager {
         loadUsers()
         fetchAndLoadQuotes()
     }
+    
 
     func loadUsers() {
         apiService.fetchAllUsers()
@@ -61,29 +62,34 @@ final class EntitiesManager {
                 if isSuccess {
                     self.currentUser = user
                 } else {
-                    print("User login failed for user: \(user)")
-                }
-            })
-            .store(in: &cancellables)
-    }
-    func logUser(user: String, password: String) {
-        apiService.Login(userName: user, password: password)
-            .sink(receiveCompletion: { completion in
-                switch completion {
-                case .failure(let error):
-                    print("Failed to register user: \(error)")
-                case .finished:
-                    print("Registration process completed.")
-                }
-            }, receiveValue: { isSuccess in
-                if isSuccess {
-                    self.currentUser = user
-                } else {
                     print("User registration failed for user: \(user)")
                 }
             })
             .store(in: &cancellables)
     }
+    func logUser(user: String, password: String, completion: @escaping (Bool) -> Void) {
+        apiService.Login(userName: user, password: password)
+            .sink(receiveCompletion: { completionResult in
+                switch completionResult {
+                case .failure(let error):
+                    print("Failed to log in user: \(error)")
+                    completion(false)
+                case .finished:
+                    print("Login process completed.")
+                }
+            }, receiveValue: { isSuccess in
+                if isSuccess {
+                    self.currentUser = user
+                    print("Logged in as \(user)") // Debug log
+                    completion(true)
+                } else {
+                    print("Failed to log in as \(user)") // Debug log
+                    completion(false)
+                }
+            })
+            .store(in: &cancellables)
+    }
+
     func addUser(user: User) {
         users.append(user)
         // add requesting for backend
