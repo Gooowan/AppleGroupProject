@@ -8,8 +8,14 @@
 import UIKit
 import SnapKit
 
+protocol AddQuoteDelegate: AnyObject {
+    func didAddQuote(_ quote: Quote)
+}
+
 class AddQuoteViewController: UIViewController {
     
+    weak var delegate: AddQuoteDelegate?
+
     private let quoteTextFieldContainerView: UIView = {
         let view = UIView()
         view.backgroundColor = .secondarySystemBackground
@@ -21,7 +27,6 @@ class AddQuoteViewController: UIViewController {
     
     private var quoteTextView: UITextView = {
         let textView = UITextView()
-        textView.borderStyle = .none
         textView.backgroundColor = .secondarySystemBackground
         textView.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         textView.tintColor = UIColor.label
@@ -36,12 +41,22 @@ class AddQuoteViewController: UIViewController {
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
-
     
     private var authorTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "Author..."
         field.borderStyle = .none
+        field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        field.tintColor = UIColor.label
+        field.textColor = UIColor.label
+        field.translatesAutoresizingMaskIntoConstraints = false
+        return field
+    }()
+
+    private var genreTextField: UITextField = {
+        let field = UITextField()
+        field.placeholder = "Genre (e.g., Inspiration, Love, Humor)"
+        field.borderStyle = .roundedRect
         field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         field.tintColor = UIColor.label
         field.textColor = UIColor.label
@@ -72,8 +87,25 @@ class AddQuoteViewController: UIViewController {
     }
     
     @objc private func saveButtonTapped() {
-        print("Save a quote")
-        self.dismiss(animated: true)
+        guard let text = quoteTextView.text, !text.isEmpty,
+              let author = authorTextField.text, !author.isEmpty,
+              let genre = genreTextField.text, !genre.isEmpty else {
+            let alert = UIAlertController(title: "Error", message: "Please fill in all fields: quote, author, and genre.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        let newQuote = Quote(text: text, author: author, genre: genre)
+        EntitiesManager.shared.addQuote(quote: newQuote)
+        
+        let alert = UIAlertController(title: "Success", message: "Your quote has been saved!", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        self.present(alert, animated: true) {
+            DispatchQueue.main.asyncAfter(deadline: .now() + 1.5) {
+                self.dismiss(animated: true)
+            }
+        }
     }
     
     private func setupUI() {
@@ -104,6 +136,13 @@ class AddQuoteViewController: UIViewController {
             $0.top.equalTo(separatorView.snp.bottom).offset(6)
             $0.leading.trailing.equalTo(quoteTextView)
             $0.height.equalTo(20)
+        }
+        
+        view.addSubview(genreTextField)
+        genreTextField.snp.makeConstraints {
+            $0.top.equalTo(quoteTextFieldContainerView.snp.bottom).offset(20)
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(40)
         }
     }
 }

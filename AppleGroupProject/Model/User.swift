@@ -24,5 +24,4 @@ class User {
         likedQuotes.append(quote)
         // add requesting for backend
     }
-    
 }
