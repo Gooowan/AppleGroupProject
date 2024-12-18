@@ -12,6 +12,9 @@ final class EntitiesManager {
     
     init(apiService: FetchServiceProtocol = FetchService()) {
         self.apiService = apiService
+        self.currentUser = ""
+        self.users = []
+        self.quotes = []
         loadUsers()
         fetchAndLoadQuotes()
     }

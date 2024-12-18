@@ -64,7 +64,7 @@ class BackendTests: XCTestCase {
         XCTAssertEqual(entitiesManager.quotes.first?.text, "Test Quote")
         XCTAssertEqual(entitiesManager.quotes.first?.author, "user2")
     }
-    
+
     func testAddUser() {
         let newUser = User(id: "3", username: "user3", password: "password3", likedQuotes: [], createdQuotes: [])
         
