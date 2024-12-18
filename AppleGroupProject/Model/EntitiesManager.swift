@@ -6,11 +6,12 @@ final class EntitiesManager {
     
     @Published var users: [User] = []
     @Published var quotes: [Quote] = []
-    
+    @Published var currentUser: String
     private let apiService = FetchService()
     private var cancellables = Set<AnyCancellable>()
     
     private init() {
+        self.currentUser = "UnknownUser"
         loadUsers()
         fetchAndLoadQuotes()
     }
@@ -47,6 +48,42 @@ final class EntitiesManager {
         
     }
     
+    func regUser(user: String, password: String) {
+        apiService.Register(userName: user, password: password)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed to register user: \(error)")
+                case .finished:
+                    print("Registration process completed.")
+                }
+            }, receiveValue: { isSuccess in
+                if isSuccess {
+                    self.currentUser = user
+                } else {
+                    print("User login failed for user: \(user)")
+                }
+            })
+            .store(in: &cancellables)
+    }
+    func logUser(user: String, password: String) {
+        apiService.Login(userName: user, password: password)
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed to register user: \(error)")
+                case .finished:
+                    print("Registration process completed.")
+                }
+            }, receiveValue: { isSuccess in
+                if isSuccess {
+                    self.currentUser = user
+                } else {
+                    print("User registration failed for user: \(user)")
+                }
+            })
+            .store(in: &cancellables)
+    }
     func addUser(user: User) {
         users.append(user)
         // add requesting for backend

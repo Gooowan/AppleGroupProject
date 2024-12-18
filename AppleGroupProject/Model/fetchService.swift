@@ -98,4 +98,27 @@ final class FetchService {
             }
             .eraseToAnyPublisher()
     }
+    
+    func Register(userName: String, password: String) -> AnyPublisher<Bool, Error> {
+        let body = ["username": userName, "password": password]
+
+        return makePostRequest(endpoint: "auth/register", body: body)
+            .decode(type: RegisterResponse.self, decoder: JSONDecoder())
+            .map { response in
+                return response.regResult
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func Login(userName: String, password: String) -> AnyPublisher<Bool, Error> {
+        let body = ["username": userName, "password": password]
+
+        return makePostRequest(endpoint: "auth/login", body: body)
+            .decode(type: RegisterResponse.self, decoder: JSONDecoder())
+            .map { response in
+                return response.regResult
+            }
+            .eraseToAnyPublisher()
+    }
+    
 }
