@@ -65,6 +65,7 @@ class AddQuoteViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupNavBar()
         setupUI()
+        setupAccessibilityIdentifiers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -147,5 +148,14 @@ class AddQuoteViewController: UIViewController {
             $0.leading.trailing.equalTo(quoteTextView)
             $0.height.equalTo(50)
         }
+    }
+    
+    private func setupAccessibilityIdentifiers() {
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "closeButton"
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "saveButton"
+        quoteTextView.accessibilityIdentifier = "quoteTextView"
+        authorTextField.accessibilityIdentifier = "authorTextField"
+        genreTextField.accessibilityIdentifier = "genreTextField"
+        quoteTextFieldContainerView.accessibilityIdentifier = "quoteContainerView"
     }
 }
