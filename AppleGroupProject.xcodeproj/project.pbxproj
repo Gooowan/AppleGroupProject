@@ -7,8 +7,8 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		1C269CBF2D09BB2100295FC9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1C269CBE2D09BB2100295FC9 /* SnapKit */; };
 		7B6033DD2D08B64F0005A78E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 7B6033DC2D08B6430005A78E /* .swiftlint.yml */; };
-		7B6DB35C2D1208BF001FAC1D /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 7B6DB35B2D1208BF001FAC1D /* SnapKit */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -71,7 +71,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				7B6DB35C2D1208BF001FAC1D /* SnapKit in Frameworks */,
+				1C269CBF2D09BB2100295FC9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -127,13 +127,14 @@
 			buildRules = (
 			);
 			dependencies = (
+				1C269CFC2D0AE99700295FC9 /* PBXTargetDependency */,
 			);
 			fileSystemSynchronizedGroups = (
 				7B6033A42D08B5D30005A78E /* AppleGroupProject */,
 			);
 			name = AppleGroupProject;
 			packageProductDependencies = (
-				7B6DB35B2D1208BF001FAC1D /* SnapKit */,
+				1C269CBE2D09BB2100295FC9 /* SnapKit */,
 			);
 			productName = AppleGroupProject;
 			productReference = 7B6033A22D08B5D30005A78E /* AppleGroupProject.app */;
@@ -219,7 +220,7 @@
 			minimizedProjectReferenceProxies = 1;
 			packageReferences = (
 				7B6033DB2D08B6180005A78E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
-				7B6DB35A2D1208BF001FAC1D /* XCRemoteSwiftPackageReference "SnapKit" */,
+				1C269CBD2D09BB2100295FC9 /* XCRemoteSwiftPackageReference "SnapKit" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7B6033A32D08B5D30005A78E /* Products */;
@@ -283,6 +284,10 @@
 /* End PBXSourcesBuildPhase section */
 
 /* Begin PBXTargetDependency section */
+		1C269CFC2D0AE99700295FC9 /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			productRef = 1C269CFB2D0AE99700295FC9 /* SwiftLintBuildToolPlugin */;
+		};
 		7B6033BA2D08B5D40005A78E /* PBXTargetDependency */ = {
 			isa = PBXTargetDependency;
 			target = 7B6033A12D08B5D30005A78E /* AppleGroupProject */;
@@ -301,14 +306,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JFN49USSXD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleGroupProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -316,6 +324,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Big4.AppleGroupProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -327,14 +336,17 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
+				CODE_SIGN_IDENTITY = "Apple Development";
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = JFN49USSXD;
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = AppleGroupProject/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
 				INFOPLIST_KEY_UILaunchStoryboardName = LaunchScreen;
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPad = "UIInterfaceOrientationPortrait UIInterfaceOrientationPortraitUpsideDown UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
 				INFOPLIST_KEY_UISupportedInterfaceOrientations_iPhone = "UIInterfaceOrientationPortrait UIInterfaceOrientationLandscapeLeft UIInterfaceOrientationLandscapeRight";
+				IPHONEOS_DEPLOYMENT_TARGET = 18.1;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -342,6 +354,7 @@
 				MARKETING_VERSION = 1.0;
 				PRODUCT_BUNDLE_IDENTIFIER = Big4.AppleGroupProject;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE_SPECIFIER = "";
 				SWIFT_EMIT_LOC_STRINGS = YES;
 				SWIFT_VERSION = 5.0;
 				TARGETED_DEVICE_FAMILY = "1,2";
@@ -577,6 +590,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCRemoteSwiftPackageReference section */
+		1C269CBD2D09BB2100295FC9 /* XCRemoteSwiftPackageReference "SnapKit" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 5.7.1;
+			};
+		};
 		7B6033DB2D08B6180005A78E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
@@ -585,21 +606,18 @@
 				minimumVersion = 0.57.1;
 			};
 		};
-		7B6DB35A2D1208BF001FAC1D /* XCRemoteSwiftPackageReference "SnapKit" */ = {
-			isa = XCRemoteSwiftPackageReference;
-			repositoryURL = "https://github.com/SnapKit/SnapKit.git";
-			requirement = {
-				kind = upToNextMajorVersion;
-				minimumVersion = 5.7.1;
-			};
-		};
 /* End XCRemoteSwiftPackageReference section */
 
 /* Begin XCSwiftPackageProductDependency section */
-		7B6DB35B2D1208BF001FAC1D /* SnapKit */ = {
+		1C269CBE2D09BB2100295FC9 /* SnapKit */ = {
 			isa = XCSwiftPackageProductDependency;
-			package = 7B6DB35A2D1208BF001FAC1D /* XCRemoteSwiftPackageReference "SnapKit" */;
+			package = 1C269CBD2D09BB2100295FC9 /* XCRemoteSwiftPackageReference "SnapKit" */;
 			productName = SnapKit;
+		};
+		1C269CFB2D0AE99700295FC9 /* SwiftLintBuildToolPlugin */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 7B6033DB2D08B6180005A78E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
+			productName = "plugin:SwiftLintBuildToolPlugin";
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
