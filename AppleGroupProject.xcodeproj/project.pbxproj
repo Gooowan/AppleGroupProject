@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		1C269CBF2D09BB2100295FC9 /* SnapKit in Frameworks */ = {isa = PBXBuildFile; productRef = 1C269CBE2D09BB2100295FC9 /* SnapKit */; };
+		1C4D33302D1308BA00EC3920 /* CombineCocoa in Frameworks */ = {isa = PBXBuildFile; productRef = 1C4D332F2D1308BA00EC3920 /* CombineCocoa */; };
 		7B6033DD2D08B64F0005A78E /* .swiftlint.yml in Resources */ = {isa = PBXBuildFile; fileRef = 7B6033DC2D08B6430005A78E /* .swiftlint.yml */; };
 /* End PBXBuildFile section */
 
@@ -71,6 +72,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				1C4D33302D1308BA00EC3920 /* CombineCocoa in Frameworks */,
 				1C269CBF2D09BB2100295FC9 /* SnapKit in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -135,6 +137,7 @@
 			name = AppleGroupProject;
 			packageProductDependencies = (
 				1C269CBE2D09BB2100295FC9 /* SnapKit */,
+				1C4D332F2D1308BA00EC3920 /* CombineCocoa */,
 			);
 			productName = AppleGroupProject;
 			productReference = 7B6033A22D08B5D30005A78E /* AppleGroupProject.app */;
@@ -221,6 +224,7 @@
 			packageReferences = (
 				7B6033DB2D08B6180005A78E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */,
 				1C269CBD2D09BB2100295FC9 /* XCRemoteSwiftPackageReference "SnapKit" */,
+				1C4D332E2D1308BA00EC3920 /* XCRemoteSwiftPackageReference "CombineCocoa" */,
 			);
 			preferredProjectObjectVersion = 77;
 			productRefGroup = 7B6033A32D08B5D30005A78E /* Products */;
@@ -598,6 +602,14 @@
 				minimumVersion = 5.7.1;
 			};
 		};
+		1C4D332E2D1308BA00EC3920 /* XCRemoteSwiftPackageReference "CombineCocoa" */ = {
+			isa = XCRemoteSwiftPackageReference;
+			repositoryURL = "https://github.com/CombineCommunity/CombineCocoa";
+			requirement = {
+				kind = upToNextMajorVersion;
+				minimumVersion = 0.4.1;
+			};
+		};
 		7B6033DB2D08B6180005A78E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */ = {
 			isa = XCRemoteSwiftPackageReference;
 			repositoryURL = "https://github.com/SimplyDanny/SwiftLintPlugins";
@@ -618,6 +630,11 @@
 			isa = XCSwiftPackageProductDependency;
 			package = 7B6033DB2D08B6180005A78E /* XCRemoteSwiftPackageReference "SwiftLintPlugins" */;
 			productName = "plugin:SwiftLintBuildToolPlugin";
+		};
+		1C4D332F2D1308BA00EC3920 /* CombineCocoa */ = {
+			isa = XCSwiftPackageProductDependency;
+			package = 1C4D332E2D1308BA00EC3920 /* XCRemoteSwiftPackageReference "CombineCocoa" */;
+			productName = CombineCocoa;
 		};
 /* End XCSwiftPackageProductDependency section */
 	};
