@@ -7,11 +7,11 @@ final class EntitiesManager {
     @Published var users: [User] = []
     @Published var quotes: [Quote] = []
     @Published var currentUser: String
-    private let apiService = FetchService()
+    var apiService: FetchServiceProtocol
     private var cancellables = Set<AnyCancellable>()
     
-    private init() {
-        self.currentUser = "UnknownUser"
+    init(apiService: FetchServiceProtocol = FetchService()) {
+        self.apiService = apiService
         loadUsers()
         fetchAndLoadQuotes()
     }
