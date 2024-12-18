@@ -67,8 +67,7 @@ final class EntitiesManager {
                             print("Successfully added quote.")
                         }
                     }, receiveValue: { [weak self] createdQuote in
-                        self?.quotes.append(createdQuote)
-                        print("Added Quote: \(createdQuote.text) by \(createdQuote.author)")
+                        self?.quotes.insert(createdQuote, at: 0)
                     })
                     .store(in: &cancellables)
     }

@@ -88,8 +88,13 @@ final class FetchService {
         makePostRequest(endpoint: "quote/create", body: quote)
             .decode(type: CreateQuoteResponse.self, decoder: JSONDecoder())
             .map { response in
-                let quoteObject = response.objects.quote
-                return Quote(text: quoteObject.text, author: quoteObject.author, genre: quoteObject.genre, id: quoteObject.id)
+                let quoteObject = response.create
+                return Quote(
+                    text: quoteObject.text,
+                    author: quoteObject.author,
+                    genre: quoteObject.genre,
+                    id: quoteObject.id
+                )
             }
             .eraseToAnyPublisher()
     }

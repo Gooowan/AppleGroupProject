@@ -21,16 +21,14 @@ struct QuotesResponse: Decodable {
 }
 
 struct CreateQuoteResponse: Decodable {
-    struct QuoteObject: Decodable {
+    struct QuoteData: Decodable {
         let id: String
         let text: String
         let author: String
         let genre: String
+        let creatorId: String
+        let creationDate: String
     }
     
-    let objects: Objects
-    
-    struct Objects: Decodable {
-        let quote: QuoteObject
-    }
+    let create: QuoteData
 }
