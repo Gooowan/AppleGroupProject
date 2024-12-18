@@ -17,11 +17,11 @@ class Quote {
         self.genre = genre
     }
     
-    func ChangeQuote(text: String){
+    func ChangeQuote(text: String) {
         self.text = text
     }
     
-    func ChangeAuthor(text: String){
+    func ChangeAuthor(text: String) {
         self.text = text
     }
 

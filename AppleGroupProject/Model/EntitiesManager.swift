@@ -7,7 +7,6 @@
 
 import Foundation
 
-
 final class EntitiesManager {
     static let shared = EntitiesManager()
     

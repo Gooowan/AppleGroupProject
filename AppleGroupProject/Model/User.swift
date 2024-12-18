@@ -29,7 +29,7 @@ class User {
     }
     
     func loadallQuotes() -> [Quote] {
-        //load all quotes from backend
+        // load all quotes from backend
         return []
     }
 }

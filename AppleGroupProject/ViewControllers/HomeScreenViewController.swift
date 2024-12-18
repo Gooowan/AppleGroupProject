@@ -21,6 +21,11 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
         
     }
     
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        tableView.reloadData()
+    }
+    
     private func setupNavBar() {
         title = "Saved Quotes"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
