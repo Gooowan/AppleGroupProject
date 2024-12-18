@@ -15,7 +15,7 @@ private enum APIEndpoint {
     
 }
 
-final class FetchService {
+final class FetchService: FetchServiceProtocol {
     private var cancellable = Set<AnyCancellable>()
     
     func fetchAllQuotes() -> AnyPublisher<[Quote], Error> {

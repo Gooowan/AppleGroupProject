@@ -79,6 +79,7 @@ class AddQuoteViewController: UIViewController {
         view.backgroundColor = .systemBackground
         setupNavBar()
         setupUI()
+        setupAccessibilityIdentifiers()
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -106,7 +107,7 @@ class AddQuoteViewController: UIViewController {
             return
         }
         
-        let quoteConstruct = QuoteCreationStruct(username: author, text: text, genre: genre)
+        let quoteConstruct = QuoteCreationStruct(username: EntitiesManager.shared.currentUser, text: text, genre: genre)
         EntitiesManager.shared.addQuote(quoteArg: quoteConstruct)
         
         let alert = UIAlertController(title: "Success", message: "Your quote has been saved!", preferredStyle: .alert)
@@ -162,5 +163,14 @@ class AddQuoteViewController: UIViewController {
             $0.leading.trailing.equalTo(quoteTextView)
             $0.height.equalTo(50)
         }
+    }
+    
+    private func setupAccessibilityIdentifiers() {
+        navigationItem.leftBarButtonItem?.accessibilityIdentifier = "closeButton"
+        navigationItem.rightBarButtonItem?.accessibilityIdentifier = "saveButton"
+        quoteTextView.accessibilityIdentifier = "quoteTextView"
+        authorTextField.accessibilityIdentifier = "authorTextField"
+        genreTextField.accessibilityIdentifier = "genreTextField"
+        quoteTextFieldContainerView.accessibilityIdentifier = "quoteContainerView"
     }
 }
