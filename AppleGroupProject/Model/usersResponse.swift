@@ -16,3 +16,7 @@ struct UserResponse: Decodable {
     
     let users: [UserObject]
 }
+
+struct RegisterResponse: Decodable {
+    let regResult: Bool
+}

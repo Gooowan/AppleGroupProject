@@ -88,9 +88,37 @@ final class FetchService {
         makePostRequest(endpoint: "quote/create", body: quote)
             .decode(type: CreateQuoteResponse.self, decoder: JSONDecoder())
             .map { response in
-                let quoteObject = response.objects.quote
-                return Quote(text: quoteObject.text, author: quoteObject.author, genre: quoteObject.genre, id: quoteObject.id)
+                let quoteObject = response.create
+                return Quote(
+                    text: quoteObject.text,
+                    author: quoteObject.author,
+                    genre: quoteObject.genre,
+                    id: quoteObject.id
+                )
             }
             .eraseToAnyPublisher()
     }
+    
+    func Register(userName: String, password: String) -> AnyPublisher<Bool, Error> {
+        let body = ["username": userName, "password": password]
+
+        return makePostRequest(endpoint: "auth/register", body: body)
+            .decode(type: RegisterResponse.self, decoder: JSONDecoder())
+            .map { response in
+                return response.regResult
+            }
+            .eraseToAnyPublisher()
+    }
+    
+    func Login(userName: String, password: String) -> AnyPublisher<Bool, Error> {
+        let body = ["username": userName, "password": password]
+
+        return makePostRequest(endpoint: "auth/login", body: body)
+            .decode(type: RegisterResponse.self, decoder: JSONDecoder())
+            .map { response in
+                return response.regResult
+            }
+            .eraseToAnyPublisher()
+    }
+    
 }
