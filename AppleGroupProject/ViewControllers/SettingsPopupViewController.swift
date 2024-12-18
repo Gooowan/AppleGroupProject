@@ -8,7 +8,6 @@
 import UIKit
 import SnapKit
 
-
 class SettingsPopupViewController: UIViewController {
 
     private let genreDisplayView: UIView = {
@@ -26,7 +25,7 @@ class SettingsPopupViewController: UIViewController {
     private let closeButton: UIButton = {
         let button = UIButton(type: .system)
         button.setTitle("Close", for: .normal)
-        button.addTarget(self, action: #selector(closeButtonTapped), for: .touchUpInside)
+        button.addTarget(SettingsPopupViewController.self, action: #selector(closeButtonTapped), for: .touchUpInside)
         return button
     }()
 

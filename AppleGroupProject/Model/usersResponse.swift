@@ -20,3 +20,7 @@ struct UserResponse: Decodable {
 struct RegisterResponse: Decodable {
     let regResult: Bool
 }
+
+struct LoginResponse: Decodable {
+    let logResult: Bool
+}

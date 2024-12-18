@@ -114,9 +114,9 @@ final class FetchService {
         let body = ["username": userName, "password": password]
 
         return makePostRequest(endpoint: "auth/login", body: body)
-            .decode(type: RegisterResponse.self, decoder: JSONDecoder())
+            .decode(type: LoginResponse.self, decoder: JSONDecoder())
             .map { response in
-                return response.regResult
+                return response.logResult
             }
             .eraseToAnyPublisher()
     }
