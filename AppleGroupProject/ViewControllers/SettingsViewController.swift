@@ -9,7 +9,6 @@ import UIKit
 
 class SettingsViewController: UIViewController {
 
-    // MARK: - UI Components
     private let showGenresLabel: UILabel = {
         let label = UILabel()
         label.text = "Show Genres"
@@ -22,7 +21,6 @@ class SettingsViewController: UIViewController {
         return toggle
     }()
 
-    // MARK: - Lifecycle
     override func viewDidLoad() {
         super.viewDidLoad()
         title = "Settings"
@@ -48,7 +46,6 @@ class SettingsViewController: UIViewController {
         ])
     }
 
-    // MARK: - Actions
     @objc private func toggleGenres() {
         UserDefaults.standard.set(showGenresSwitch.isOn, forKey: "ShowGenres")
     }

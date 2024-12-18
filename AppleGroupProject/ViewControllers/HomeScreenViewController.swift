@@ -11,12 +11,7 @@ import SnapKit
 class HomeScreenViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView()
-    var savedQuotes: [Quote] = [
-        Quote(text: "The only way to do great work is to love what you do.", author: "Steve Jobs", genre: "Business"),
-        Quote(text: "Life is what happens when you're busy making other plans.", author: "John Lennon", genre: "Life"),
-        Quote(text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill", genre: "Motivation")
-    ]
-
+    var savedQuotes: [Quote] = EntitiesManager.shared.quotes
 
     override func viewDidLoad() {
         super.viewDidLoad()
