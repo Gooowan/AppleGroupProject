@@ -17,12 +17,7 @@ class AddQuoteViewController: UIViewController {
     weak var delegate: AddQuoteDelegate?
 
     private let quoteTextFieldContainerView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .secondarySystemBackground
-        view.layer.masksToBounds = false
-        view.layer.cornerRadius = 8
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+        InfoContainerView()
     }()
     
     private var quoteTextView: UITextView = {
@@ -35,11 +30,8 @@ class AddQuoteViewController: UIViewController {
         return textView
     }()
     
-    private var separatorView: UIView = {
-        let view = UIView()
-        view.backgroundColor = .lightGray
-        view.translatesAutoresizingMaskIntoConstraints = false
-        return view
+    private var firstSeparatorView: UIView = {
+        SeparatorView()
     }()
     
     private var authorTextField: UITextField = {
@@ -52,11 +44,15 @@ class AddQuoteViewController: UIViewController {
         field.translatesAutoresizingMaskIntoConstraints = false
         return field
     }()
+    
+    private var secondSeparatorView: UIView = {
+        SeparatorView()
+    }()
 
     private var genreTextField: UITextField = {
         let field = UITextField()
         field.placeholder = "Genre (e.g., Inspiration, Love, Humor)"
-        field.borderStyle = .roundedRect
+        field.borderStyle = .none
         field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
         field.tintColor = UIColor.label
         field.textColor = UIColor.label
@@ -95,8 +91,9 @@ class AddQuoteViewController: UIViewController {
             present(alert, animated: true)
             return
         }
-        let newQuote = QuoteCreationStruct(username: author, text: text, genre: genre)
-        EntitiesManager.shared.addQuote(quoteArg: newQuote)
+        
+        let quoteConstruct = QuoteCreationStruct(username: author, text: text, genre: genre)
+        EntitiesManager.shared.addQuote(quoteArg: quoteConstruct)
         
         let alert = UIAlertController(title: "Success", message: "Your quote has been saved!", preferredStyle: .alert)
         alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -113,35 +110,42 @@ class AddQuoteViewController: UIViewController {
         quoteTextFieldContainerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             $0.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(200)
+            $0.height.equalTo(280)
         }
         
         quoteTextFieldContainerView.addSubview(quoteTextView)
-        quoteTextFieldContainerView.addSubview(separatorView)
+        quoteTextFieldContainerView.addSubview(firstSeparatorView)
         quoteTextFieldContainerView.addSubview(authorTextField)
+        quoteTextFieldContainerView.addSubview(secondSeparatorView)
+        quoteTextFieldContainerView.addSubview(genreTextField)
         
         quoteTextView.snp.makeConstraints {
             $0.top.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(120)
+            $0.height.equalTo(150)
         }
         
-        separatorView.snp.makeConstraints {
+        firstSeparatorView.snp.makeConstraints {
             $0.top.equalTo(quoteTextView.snp.bottom).offset(6)
             $0.leading.trailing.equalTo(quoteTextView)
             $0.height.equalTo(0.5)
         }
         
         authorTextField.snp.makeConstraints {
-            $0.top.equalTo(separatorView.snp.bottom).offset(6)
+            $0.top.equalTo(firstSeparatorView.snp.bottom).offset(6)
             $0.leading.trailing.equalTo(quoteTextView)
-            $0.height.equalTo(20)
+            $0.height.equalTo(50)
         }
         
-        view.addSubview(genreTextField)
+        secondSeparatorView.snp.makeConstraints {
+            $0.top.equalTo(authorTextField.snp.bottom).offset(6)
+            $0.leading.trailing.equalTo(quoteTextView)
+            $0.height.equalTo(0.5)
+        }
+        
         genreTextField.snp.makeConstraints {
-            $0.top.equalTo(quoteTextFieldContainerView.snp.bottom).offset(20)
-            $0.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(40)
+            $0.top.equalTo(secondSeparatorView.snp.bottom).offset(6)
+            $0.leading.trailing.equalTo(quoteTextView)
+            $0.height.equalTo(50)
         }
     }
 }

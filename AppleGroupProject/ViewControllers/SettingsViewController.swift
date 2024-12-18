@@ -6,52 +6,66 @@
 //
 
 import UIKit
+import SnapKit
 
 class SettingsViewController: UIViewController {
-
-    private let showGenresLabel: UILabel = {
-        let label = UILabel()
-        label.text = "Show Genres"
-        label.font = UIFont.systemFont(ofSize: 16)
-        return label
+    
+    private let settingsContainerView: UIView = {
+        InfoContainerView()
     }()
-
-    private let showGenresSwitch: UISwitch = {
-        let toggle = UISwitch()
-        return toggle
+    
+    private let genreDisplayView: UIView = {
+        GenreDisplayView()
     }()
-
+    
+    private let languageDisplayView: UIView = {
+        LanguageDisplayView()
+    }()
+    
+    private let themeDisplayView: UIView = {
+        ThemeDisplayView()
+    }()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-        title = "Settings"
-        view.backgroundColor = .white
+        setupNavBar()
         setupUI()
-        loadSettings()
-        showGenresSwitch.addTarget(self, action: #selector(toggleGenres), for: .valueChanged)
     }
-
+    
+    private func setupNavBar() {
+        title = "Settings"
+        view.backgroundColor = .systemBackground
+        navigationController?.navigationBar.prefersLargeTitles = true
+    }
+    
     private func setupUI() {
-        view.addSubview(showGenresLabel)
-        view.addSubview(showGenresSwitch)
-
-        showGenresLabel.translatesAutoresizingMaskIntoConstraints = false
-        showGenresSwitch.translatesAutoresizingMaskIntoConstraints = false
-
-        NSLayoutConstraint.activate([
-            showGenresLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
-            showGenresLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-
-            showGenresSwitch.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
-            showGenresSwitch.centerYAnchor.constraint(equalTo: showGenresLabel.centerYAnchor)
-        ])
-    }
-
-    @objc private func toggleGenres() {
-        UserDefaults.standard.set(showGenresSwitch.isOn, forKey: "ShowGenres")
-    }
-
-    private func loadSettings() {
-        let showGenres = UserDefaults.standard.bool(forKey: "ShowGenres")
-        showGenresSwitch.isOn = showGenres
+        view.addSubview(settingsContainerView)
+        
+        settingsContainerView.snp.makeConstraints {
+            $0.centerY.equalToSuperview()
+            $0.leading.trailing.equalToSuperview().inset(10)
+            $0.height.equalTo(300)
+        }
+        
+        settingsContainerView.addSubview(genreDisplayView)
+        
+        genreDisplayView.snp.makeConstraints {
+            $0.top.leading.trailing.equalToSuperview().inset(5)
+            $0.height.equalTo(60)
+        }
+        
+        settingsContainerView.addSubview(languageDisplayView)
+        
+        languageDisplayView.snp.makeConstraints {
+            $0.top.equalTo(genreDisplayView.snp.bottom)
+            $0.leading.trailing.equalTo(genreDisplayView)
+        }
+        
+        settingsContainerView.addSubview(themeDisplayView)
+        
+        themeDisplayView.snp.makeConstraints {
+            $0.top.equalTo(languageDisplayView.snp.bottom)
+            $0.leading.trailing.equalTo(genreDisplayView)
+        }
     }
 }

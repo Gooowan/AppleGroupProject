@@ -24,14 +24,20 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
     }
 
     private func ObserverChanges() {
-            EntitiesManager.shared.$quotes
-                .receive(on: DispatchQueue.main)
-                .sink { [weak self] updatedQuotes in
-                    self?.savedQuotes = updatedQuotes
-                    self?.tableView.reloadData()
-                }
-                .store(in: &cancellables)
-        }
+        EntitiesManager.shared.$quotes
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] updatedQuotes in
+                self?.savedQuotes = updatedQuotes
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+        
+        AppConfig.shared.$isGenresHidden
+            .sink { [weak self] _ in
+                self?.tableView.reloadData()
+            }
+            .store(in: &cancellables)
+    }
 
     private func setupNavBar() {
         title = "Saved Quotes"
@@ -52,7 +58,7 @@ class HomeScreenViewController: UIViewController, UITableViewDataSource, UITable
         tableView.dataSource = self
         tableView.register(QuoteCell.self, forCellReuseIdentifier: "QuoteCell")
         tableView.rowHeight = UITableView.automaticDimension
-        tableView.estimatedRowHeight = 100
+        tableView.estimatedRowHeight = 120
 
         tableView.snp.makeConstraints { make in
             make.edges.equalToSuperview()
