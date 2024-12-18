@@ -78,6 +78,10 @@ class QuoteCell: UITableViewCell {
         quoteLabel.text = "\"\(quote.text)\""
         genreLabel.text = "\(quote.genre)"
         authorLabel.text = "- \(quote.author)"
+        
+        quoteLabel.accessibilityIdentifier = "quoteLabel"
+        genreLabel.accessibilityIdentifier = "genreLabel"
+        authorLabel.accessibilityIdentifier = "authorLabel"
     }
 
     required init?(coder: NSCoder) {

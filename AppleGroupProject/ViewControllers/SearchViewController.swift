@@ -36,6 +36,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         title = "Search Quotes"
 
         setupUI()
+        setupAccessibilityIdentifiers()
         addGestures()
         searchButton.addTarget(self, action: #selector(performSearch), for: .touchUpInside)
     }
@@ -106,5 +107,11 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let quote = filteredQuotes[indexPath.row]
         cell.configure(with: quote)
         return cell
+    }
+    
+    private func setupAccessibilityIdentifiers() {
+        searchTextField.accessibilityIdentifier = "searchTextField"
+        searchButton.accessibilityIdentifier = "searchButton"
+        tableView.accessibilityIdentifier = "searchTableView"
     }
 }

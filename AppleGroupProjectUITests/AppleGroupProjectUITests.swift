@@ -54,6 +54,30 @@ final class AppleGroupProjectUITests: XCTestCase {
         app.buttons["closeButton"].tap()
         XCTAssertEqual(app.navigationBars["Saved Quotes"].exists, true)
     }
+    
+    func testSearchQuote() throws {
+        app.tabBars.buttons["Search"].tap()
+
+        let searchTextField = app.textFields["searchTextField"]
+        let searchButton = app.buttons["searchButton"]
+        let tableView = app.tables["searchTableView"]
+
+        XCTAssertEqual(searchTextField.exists, true)
+        XCTAssertEqual(searchButton.exists, true)
+        XCTAssertEqual(tableView.exists, true)
+
+        searchTextField.tap()
+        searchTextField.typeText("The worst man is the one")
+        searchButton.tap()
+
+        let firstCell = tableView.cells.element(boundBy: 0)
+        XCTAssertTrue(firstCell.waitForExistence(timeout: 3.0), "Search result cell did not appear.")
+
+        let quoteText = firstCell.staticTexts["quoteLabel"]
+        XCTAssertTrue(quoteText.exists, "Quote text label not found in the first cell.")
+        XCTAssertEqual(quoteText.label, "\"The worst man is the one who sees himself as the best.\"", "Quote text does not match expected value.")
+    }
+
 
     override func tearDownWithError() throws {
         // Put teardown code here. This method is called after the invocation of each test method in the class.

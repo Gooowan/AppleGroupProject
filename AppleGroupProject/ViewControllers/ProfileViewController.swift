@@ -80,6 +80,7 @@ class ProfileViewController: UIViewController {
             target: self,
             action: #selector(settingsButtonTapped)
         )
+        settingsButton.accessibilityIdentifier = "profileSettingsButton"
         navigationItem.rightBarButtonItem = settingsButton
     }
 
@@ -229,7 +230,6 @@ class ProfileViewController: UIViewController {
         
         updateUIForLoggedInState()
     }
-
 
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)

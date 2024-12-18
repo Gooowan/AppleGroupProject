@@ -26,6 +26,7 @@ class ThemeDisplayView: UIView {
     
     private let settingSwitch: UISwitch = {
         let newSwitch = UISwitch()
+        newSwitch.accessibilityIdentifier = "darkModeToggle"
         return newSwitch
     }()
     
