@@ -1,36 +1,50 @@
-//
-//  EntitiesManager.swift
-//  AppleGroupProject
-//
-//  Created by Ivan Solomatin on 17.12.2024.
-//
-
 import Foundation
-
+import Combine
 
 final class EntitiesManager {
     static let shared = EntitiesManager()
     
-    var users: [User] = []
-    var quotes: [Quote] = []
+    @Published var users: [User] = []
+    @Published var quotes: [Quote] = []
+    
+    private let apiService = FetchService()
+    private var cancellables = Set<AnyCancellable>()
     
     private init() {
-        users = loadUsers()
-        quotes = loadQuotes()
+        loadUsers()
+        fetchAndLoadQuotes()
     }
     
-    func loadUsers() -> [User] {
-        // load all users from backend
-        return []
+    func loadUsers() {
+        apiService.fetchAllUsers()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed to fetch users: \(error)")
+                case .finished:
+                    print("Successfully fetched users.")
+                }
+            }, receiveValue: { [weak self] fetchedUsers in
+                self?.users = fetchedUsers
+            })
+            .store(in: &cancellables)
     }
     
-    func loadQuotes() -> [Quote] {
-        // load all quotes from backend
-        return [
-            Quote(text: "The only way to do great work is to love what you do.", author: "Steve Jobs", genre: "Business"),
-            Quote(text: "Life is what happens when you're busy making other plans.", author: "John Lennon", genre: "Life"),
-            Quote(text: "Success is not final, failure is not fatal: it is the courage to continue that counts.", author: "Winston Churchill", genre: "Motivation")
-        ]
+    func fetchAndLoadQuotes() {
+        apiService.fetchAllQuotes()
+            .sink(receiveCompletion: { completion in
+                switch completion {
+                case .failure(let error):
+                    print("Failed to fetch quotes: \(error)")
+                case .finished:
+                    print("Successfully fetched quotes.")
+                }
+            }, receiveValue: { [weak self] fetchedQuotes in
+                self?.quotes = fetchedQuotes
+                print("Quotes loaded: \(fetchedQuotes.count) quotes")
+            })
+            .store(in: &cancellables)
+        
     }
     
     func addUser(user: User) {
@@ -43,9 +57,20 @@ final class EntitiesManager {
         // add requesting for backend
     }
     
-    func addQuote(quote: Quote) {
-        quotes.append(quote)
-        // add requesting for backend
+    func addQuote(quoteArg: QuoteCreationStruct) {
+        apiService.addQuote(quote: quoteArg)
+                    .sink(receiveCompletion: { completion in
+                        switch completion {
+                        case .failure(let error):
+                            print("Failed to add quote: \(error)")
+                        case .finished:
+                            print("Successfully added quote.")
+                        }
+                    }, receiveValue: { [weak self] createdQuote in
+                        self?.quotes.append(createdQuote)
+                        print("Added Quote: \(createdQuote.text) by \(createdQuote.author)")
+                    })
+                    .store(in: &cancellables)
     }
     
     func removeQuote(quote: Quote) {
