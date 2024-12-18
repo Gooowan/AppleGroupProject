@@ -197,7 +197,6 @@ class ProfileViewController: UIViewController {
         profileImageView.tintColor = .systemBlue
     }
 
-
     private func updateUIForLoggedOutState() {
         usernameLabel.text = nil
         quoteCountLabel.text = nil
