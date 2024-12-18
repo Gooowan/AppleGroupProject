@@ -9,7 +9,7 @@ class MainTabBarController: UITabBarController {
         
         let homeScreenVC = UINavigationController(rootViewController: HomeScreenViewController())
         let searchVC = UINavigationController(rootViewController: SearchViewController())
-        let settingsVC = UINavigationController(rootViewController: SettingsViewController())
+        let settingsVC = UINavigationController(rootViewController: ProfileViewController())
         
         homeScreenVC.tabBarItem = UITabBarItem(title: "Home", image: UIImage(systemName: "house.fill"), tag: 0)
         searchVC.tabBarItem = UITabBarItem(title: "Search", image: UIImage(systemName: "magnifyingglass"), tag: 1)
