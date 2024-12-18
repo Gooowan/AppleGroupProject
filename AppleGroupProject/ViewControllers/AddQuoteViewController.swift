@@ -93,7 +93,7 @@ class AddQuoteViewController: UIViewController {
             return
         }
         
-        let quoteConstruct = QuoteCreationStruct(username: author, text: text, genre: genre)
+        let quoteConstruct = QuoteCreationStruct(username: EntitiesManager.shared.currentUser, text: text, genre: genre)
         EntitiesManager.shared.addQuote(quoteArg: quoteConstruct)
         
         let alert = UIAlertController(title: "Success", message: "Your quote has been saved!", preferredStyle: .alert)
