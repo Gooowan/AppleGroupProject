@@ -35,22 +35,22 @@ class AddQuoteViewController: UIViewController {
         SeparatorView()
     }()
     
-//    private var authorTextField: UITextField = {
-//        let field = UITextField()
-//        let placeholderText = "Author..."
-//        let placeholderAttributes: [NSAttributedString.Key: Any] = [
-//            .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
-//        ]
-//        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
-//
-//        field.borderStyle = .none
-//        field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
-//        field.tintColor = UIColor.label
-//        field.textColor = UIColor.label
-//        field.translatesAutoresizingMaskIntoConstraints = false
-//        field.applySecondaryBackgroundTheme()
-//        return field
-//    }()
+    private var authorTextField: UITextField = {
+        let field = UITextField()
+        let placeholderText = "Author..."
+        let placeholderAttributes: [NSAttributedString.Key: Any] = [
+            .foregroundColor: ThemeManager.textColor(for: AppConfig.shared.theme)
+        ]
+        field.attributedPlaceholder = NSAttributedString(string: placeholderText, attributes: placeholderAttributes)
+
+        field.borderStyle = .none
+        field.font = UIFont.systemFont(ofSize: 16, weight: .regular)
+        field.tintColor = UIColor.label
+        field.textColor = UIColor.label
+        field.translatesAutoresizingMaskIntoConstraints = false
+        field.applySecondaryBackgroundTheme()
+        return field
+    }()
     
     private var secondSeparatorView: UIView = {
         SeparatorView()
@@ -98,7 +98,7 @@ class AddQuoteViewController: UIViewController {
     
     @objc private func saveButtonTapped() {
         guard let text = quoteTextView.text, !text.isEmpty,
-//              let author = authorTextField.text, !author.isEmpty,
+              let author = authorTextField.text, !author.isEmpty,
               let genre = genreTextField.text, !genre.isEmpty else {
             let alert = UIAlertController(title: "Error", message: "Please fill in all fields: quote, author, and genre.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
@@ -125,13 +125,11 @@ class AddQuoteViewController: UIViewController {
         quoteTextFieldContainerView.snp.makeConstraints {
             $0.top.equalTo(view.safeAreaLayoutGuide).offset(30)
             $0.leading.trailing.equalToSuperview().inset(10)
-            $0.height.equalTo(290)
+            $0.height.equalTo(240)
         }
         
         quoteTextFieldContainerView.addSubview(quoteTextView)
         quoteTextFieldContainerView.addSubview(firstSeparatorView)
-//        quoteTextFieldContainerView.addSubview(authorTextField)
-        quoteTextFieldContainerView.addSubview(secondSeparatorView)
         quoteTextFieldContainerView.addSubview(genreTextField)
         
         quoteTextView.snp.makeConstraints {
@@ -145,20 +143,8 @@ class AddQuoteViewController: UIViewController {
             $0.height.equalTo(0.5)
         }
         
-//        authorTextField.snp.makeConstraints {
-//            $0.top.equalTo(firstSeparatorView.snp.bottom).offset(6)
-//            $0.leading.trailing.equalTo(quoteTextView)
-//            $0.height.equalTo(50)
-//        }
-        
-//        secondSeparatorView.snp.makeConstraints {
-//            $0.top.equalTo(authorTextField.snp.bottom).offset(6)
-//            $0.leading.trailing.equalTo(quoteTextView)
-//            $0.height.equalTo(0.5)
-//        }
-        
         genreTextField.snp.makeConstraints {
-            $0.top.equalTo(secondSeparatorView.snp.bottom).offset(6)
+            $0.top.equalTo(firstSeparatorView.snp.bottom).offset(6)
             $0.leading.trailing.equalTo(quoteTextView)
             $0.height.equalTo(50)
         }
@@ -168,7 +154,7 @@ class AddQuoteViewController: UIViewController {
         navigationItem.leftBarButtonItem?.accessibilityIdentifier = "closeButton"
         navigationItem.rightBarButtonItem?.accessibilityIdentifier = "saveButton"
         quoteTextView.accessibilityIdentifier = "quoteTextView"
-//        authorTextField.accessibilityIdentifier = "authorTextField"
+        authorTextField.accessibilityIdentifier = "authorTextField"
         genreTextField.accessibilityIdentifier = "genreTextField"
         quoteTextFieldContainerView.accessibilityIdentifier = "quoteContainerView"
     }
