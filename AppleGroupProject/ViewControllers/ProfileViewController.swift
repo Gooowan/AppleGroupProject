@@ -68,6 +68,20 @@ class ProfileViewController: UIViewController {
         setupUI()
         addGestures()
         bindEntitiesManager()
+        setupBindings()
+    }
+    
+    private func setupBindings() {
+        EntitiesManager.shared.$currentUser
+            .receive(on: DispatchQueue.main)
+            .sink { [weak self] currentUser in
+                if !currentUser.isEmpty {
+                    self?.updateUIForLoggedInState()
+                } else {
+                    self?.updateUIForLoggedOutState()
+                }
+            }
+            .store(in: &cancellables)
     }
 
     private func setupNavBar() {
@@ -163,12 +177,13 @@ class ProfileViewController: UIViewController {
             .store(in: &cancellables)
     }
 
-    private func updateUIForLoggedInState() {
+    func updateUIForLoggedInState() {
         guard EntitiesManager.shared.currentUser != "UnknownUser" else {
             updateUIForLoggedOutState()
             return
         }
-        
+
+        print("Searching for current user: \(EntitiesManager.shared.currentUser)")
         guard let user = EntitiesManager.shared.users.first(where: { $0.username == EntitiesManager.shared.currentUser }) else {
             print("No matching user found for \(EntitiesManager.shared.currentUser)")
             updateUIForLoggedOutState()
@@ -181,6 +196,7 @@ class ProfileViewController: UIViewController {
         loginStackView.isHidden = true
         profileImageView.tintColor = .systemBlue
     }
+
 
     private func updateUIForLoggedOutState() {
         usernameLabel.text = nil

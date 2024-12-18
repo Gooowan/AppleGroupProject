@@ -60,15 +60,22 @@ final class EntitiesManager {
                 case .finished:
                     print("Registration process completed.")
                 }
-            }, receiveValue: { isSuccess in
+            }, receiveValue: { [weak self] isSuccess in
                 if isSuccess {
-                    self.currentUser = user
+                    DispatchQueue.main.async {
+                        self?.currentUser = user
+                        let newUser = User(id: UUID().uuidString, username: user, password: password, likedQuotes: [], createdQuotes: [])
+                        
+                        self?.users.append(newUser)
+                        print("User registered and added: \(user)")
+                    }
                 } else {
                     print("User registration failed for user: \(user)")
                 }
             })
             .store(in: &cancellables)
     }
+
     func logUser(user: String, password: String, completion: @escaping (Bool) -> Void) {
         apiService.Login(userName: user, password: password)
             .sink(receiveCompletion: { completionResult in
@@ -79,13 +86,14 @@ final class EntitiesManager {
                 case .finished:
                     print("Login process completed.")
                 }
-            }, receiveValue: { isSuccess in
+            }, receiveValue: { [weak self] isSuccess in
                 if isSuccess {
-                    self.currentUser = user
-                    print("Logged in as \(user)") // Debug log
-                    completion(true)
+                    DispatchQueue.main.async {
+                        self?.currentUser = user
+                        completion(true)
+                    }
                 } else {
-                    print("Failed to log in as \(user)") // Debug log
+                    print("Failed to log in as \(user)")
                     completion(false)
                 }
             })
