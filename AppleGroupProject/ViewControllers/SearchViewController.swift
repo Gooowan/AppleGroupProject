@@ -14,6 +14,7 @@ class SearchViewController: UIViewController, UITableViewDataSource, UITableView
         let textField = UITextField()
         textField.placeholder = "Enter text, author, or genre"
         textField.borderStyle = .roundedRect
+        textField.backgroundColor = ThemeColor.lightSecBg
         textField.applySecBackgroundTheme()
         return textField
     }()

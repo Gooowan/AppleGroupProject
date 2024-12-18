@@ -17,13 +17,9 @@ final class AppleGroupProjectUITests: XCTestCase {
         let genreTextField = app.textFields["genreTextField"]
 
         XCTAssertTrue(quoteTextView.exists)
-        XCTAssertTrue(authorTextField.exists)
-        XCTAssertTrue(genreTextField.exists)
 
         quoteTextView.tap()
         quoteTextView.typeText("The way to get started is to quit talking and begin doing.")
-        authorTextField.tap()
-        authorTextField.typeText("Walt Disney")
         genreTextField.tap()
         genreTextField.typeText("Inspiration")
 

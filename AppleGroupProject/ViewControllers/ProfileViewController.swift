@@ -122,7 +122,7 @@ class ProfileViewController: UIViewController {
         }
 
         loginStackView.snp.makeConstraints {
-            $0.top.equalTo(profileImageView.snp.bottom).offset(20)
+            $0.top.equalTo(quoteCountLabel.snp.bottom).offset(20)
             $0.left.right.equalToSuperview().inset(20)
         }
 
@@ -134,9 +134,19 @@ class ProfileViewController: UIViewController {
         loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
         loginButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
 
+        let registerButton = UIButton(type: .system)
+        registerButton.setTitle("Register", for: .normal)
+        registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+        registerButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
+
+        let buttonStackView = UIStackView(arrangedSubviews: [loginButton, registerButton])
+        buttonStackView.axis = .horizontal
+        buttonStackView.distribution = .fillEqually
+        buttonStackView.spacing = 10
+
         loginStackView.addArrangedSubview(usernameTextField)
         loginStackView.addArrangedSubview(passwordTextField)
-        loginStackView.addArrangedSubview(loginButton)
+        loginStackView.addArrangedSubview(buttonStackView)
     }
 
     private func bindEntitiesManager() {
@@ -154,11 +164,18 @@ class ProfileViewController: UIViewController {
     }
 
     private func updateUIForLoggedInState() {
-        guard let user = EntitiesManager.shared.users.first(where: { $0.username == EntitiesManager.shared.currentUser }) else {
-            print("No matching user found for \(EntitiesManager.shared.currentUser)")
+        guard EntitiesManager.shared.currentUser != "UnknownUser" else {
+            updateUIForLoggedOutState()
             return
         }
-        print("Updating UI for user: \(user.username)") // Debug log
+        
+        guard let user = EntitiesManager.shared.users.first(where: { $0.username == EntitiesManager.shared.currentUser }) else {
+            print("No matching user found for \(EntitiesManager.shared.currentUser)")
+            updateUIForLoggedOutState()
+            return
+        }
+
+        print("Updating UI for user: \(user.username)")
         usernameLabel.text = "Username: \(user.username)"
         quoteCountLabel.text = "Created Quotes: \(user.createdQuotes.count)"
         loginStackView.isHidden = true
@@ -181,12 +198,35 @@ class ProfileViewController: UIViewController {
 
         EntitiesManager.shared.logUser(user: username, password: password) { success in
             DispatchQueue.main.async {
-                if !success {
+                if success {
+                    EntitiesManager.shared.currentUser = username
+                } else {
                     self.showAlert(message: "Invalid email or password.")
                 }
             }
         }
     }
+    
+    @objc private func handleRegister() {
+        guard let username = usernameTextField.text, !username.isEmpty,
+              let password = passwordTextField.text, !password.isEmpty else {
+            showAlert(message: "Please fill in all fields.")
+            return
+        }
+
+        if EntitiesManager.shared.users.contains(where: { $0.username == username }) {
+            showAlert(message: "This username is already taken.")
+            return
+        }
+
+        EntitiesManager.shared.regUser(user: username, password: password)
+        EntitiesManager.shared.currentUser = username
+        
+        let alert = UIAlertController(title: "Success", message: "Registration successful. You are now logged in.", preferredStyle: .alert)
+        alert.addAction(UIAlertAction(title: "OK", style: .default))
+        present(alert, animated: true)
+    }
+
 
     private func showAlert(message: String) {
         let alert = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
