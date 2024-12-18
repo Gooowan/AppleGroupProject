@@ -10,26 +10,18 @@ class User {
     var username: String
     var password: String
     var likedQuotes: [Quote]
+    var createdQuotes: [Quote]
     
-    init(id: String, username: String, password: String, likedQuotes: [Quote]) {
+    init(id: String, username: String, password: String, likedQuotes: [Quote], createdQuotes: [Quote]) {
         self.id = id
         self.username = username
         self.password = password
         self.likedQuotes = likedQuotes
+        self.createdQuotes = createdQuotes
     }
     
-    func addQuote(quote: Quote) {
+    func toggleLikedQuote(quote: Quote) {
         likedQuotes.append(quote)
         // add requesting for backend
-    }
-    
-    func removeQuote(quote: Quote) {
-        likedQuotes.removeAll { $0.text == quote.text }
-        // add requesting for backend
-    }
-    
-    func loadallQuotes() -> [Quote] {
-        // load all quotes from backend
-        return []
     }
 }

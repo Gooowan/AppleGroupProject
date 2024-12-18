@@ -7,14 +7,16 @@
 import Foundation
 
 class Quote {
+    let id: String
     var text: String
     var author: String
     var genre: String
     
-    init(text: String, author: String, genre: String) {
+    init(text: String, author: String, genre: String, id: String) {
         self.text = text
         self.author = author
         self.genre = genre
+        self.id = id
     }
     
     func ChangeQuote(text: String) {

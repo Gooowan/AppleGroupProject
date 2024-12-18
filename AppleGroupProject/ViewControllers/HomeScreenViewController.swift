@@ -7,25 +7,32 @@
 
 import UIKit
 import SnapKit
+import Combine
 
 class HomeScreenViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let tableView = UITableView()
-    var savedQuotes: [Quote] = EntitiesManager.shared.quotes
-
+    var savedQuotes: [Quote] = []
+    private var cancellables = Set<AnyCancellable>()
     override func viewDidLoad() {
         super.viewDidLoad()
         setupNavBar()
         view.backgroundColor = .white
         setupTableView()
+        ObserverChanges()
         
     }
-    
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
-        tableView.reloadData()
-    }
-    
+
+    private func ObserverChanges() {
+            EntitiesManager.shared.$quotes
+                .receive(on: DispatchQueue.main)
+                .sink { [weak self] updatedQuotes in
+                    self?.savedQuotes = updatedQuotes
+                    self?.tableView.reloadData()
+                }
+                .store(in: &cancellables)
+        }
+
     private func setupNavBar() {
         title = "Saved Quotes"
         navigationItem.rightBarButtonItem = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(addButtonTapped))
