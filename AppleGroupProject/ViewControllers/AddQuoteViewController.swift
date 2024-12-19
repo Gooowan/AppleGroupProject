@@ -98,9 +98,15 @@ class AddQuoteViewController: UIViewController {
     
     @objc private func saveButtonTapped() {
         guard let text = quoteTextView.text, !text.isEmpty,
-              let author = authorTextField.text, !author.isEmpty,
               let genre = genreTextField.text, !genre.isEmpty else {
             let alert = UIAlertController(title: "Error", message: "Please fill in all fields: quote, author, and genre.", preferredStyle: .alert)
+            alert.addAction(UIAlertAction(title: "OK", style: .default))
+            present(alert, animated: true)
+            return
+        }
+        
+        if EntitiesManager.shared.currentUser.isEmpty {
+            let alert = UIAlertController(title: "Error", message: "Please log in to add a quote.", preferredStyle: .alert)
             alert.addAction(UIAlertAction(title: "OK", style: .default))
             present(alert, animated: true)
             return
