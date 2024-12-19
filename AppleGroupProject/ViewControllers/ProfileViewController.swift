@@ -35,6 +35,15 @@ class ProfileViewController: UIViewController {
         stackView.spacing = 10
         return stackView
     }()
+    
+    private let logoutButton: UIButton = {
+            let button = UIButton(type: .system)
+            button.setTitle("Logout", for: .normal)
+            button.setTitleColor(.red, for: .normal)
+            button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+            button.isHidden = true
+            return button
+        }()
 
     private var usernameTextField: UITextField = {
         let textField = UITextField()
@@ -114,55 +123,61 @@ class ProfileViewController: UIViewController {
     }
 
     private func setupUI() {
-        view.addSubview(profileImageView)
-        view.addSubview(usernameLabel)
-        view.addSubview(quoteCountLabel)
-        view.addSubview(loginStackView)
+            view.addSubview(profileImageView)
+            view.addSubview(usernameLabel)
+            view.addSubview(quoteCountLabel)
+            view.addSubview(loginStackView)
 
-        profileImageView.snp.makeConstraints {
-            $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
-            $0.centerX.equalToSuperview()
-            $0.width.height.equalTo(100)
+            view.addSubview(logoutButton)
+            logoutButton.snp.makeConstraints {
+                $0.top.equalTo(quoteCountLabel.snp.bottom).offset(20)
+                $0.centerX.equalToSuperview()
+            }
+            
+            profileImageView.snp.makeConstraints {
+                $0.top.equalTo(view.safeAreaLayoutGuide).offset(20)
+                $0.centerX.equalToSuperview()
+                $0.width.height.equalTo(100)
+            }
+            profileImageView.layer.cornerRadius = 50
+
+            usernameLabel.snp.makeConstraints {
+                $0.top.equalTo(profileImageView.snp.bottom).offset(20)
+                $0.left.right.equalToSuperview().inset(20)
+            }
+
+            quoteCountLabel.snp.makeConstraints {
+                $0.top.equalTo(usernameLabel.snp.bottom).offset(10)
+                $0.left.right.equalToSuperview().inset(20)
+            }
+
+            loginStackView.snp.makeConstraints {
+                $0.top.equalTo(quoteCountLabel.snp.bottom).offset(20)
+                $0.left.right.equalToSuperview().inset(20)
+            }
+
+            view.addSubview(usernameTextField)
+            view.addSubview(passwordTextField)
+
+            let loginButton = UIButton(type: .system)
+            loginButton.setTitle("Login", for: .normal)
+            loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
+            loginButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
+
+            let registerButton = UIButton(type: .system)
+            registerButton.setTitle("Register", for: .normal)
+            registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
+            registerButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
+
+            let buttonStackView = UIStackView(arrangedSubviews: [loginButton, registerButton])
+            buttonStackView.axis = .horizontal
+            buttonStackView.distribution = .fillEqually
+            buttonStackView.spacing = 10
+
+            loginStackView.addArrangedSubview(usernameTextField)
+            loginStackView.addArrangedSubview(passwordTextField)
+            loginStackView.addArrangedSubview(buttonStackView)
         }
-        profileImageView.layer.cornerRadius = 50
-
-        usernameLabel.snp.makeConstraints {
-            $0.top.equalTo(profileImageView.snp.bottom).offset(20)
-            $0.left.right.equalToSuperview().inset(20)
-        }
-
-        quoteCountLabel.snp.makeConstraints {
-            $0.top.equalTo(usernameLabel.snp.bottom).offset(10)
-            $0.left.right.equalToSuperview().inset(20)
-        }
-
-        loginStackView.snp.makeConstraints {
-            $0.top.equalTo(quoteCountLabel.snp.bottom).offset(20)
-            $0.left.right.equalToSuperview().inset(20)
-        }
-
-        view.addSubview(usernameTextField)
-        view.addSubview(passwordTextField)
-        
-        let loginButton = UIButton(type: .system)
-        loginButton.setTitle("Login", for: .normal)
-        loginButton.addTarget(self, action: #selector(handleLogin), for: .touchUpInside)
-        loginButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
-
-        let registerButton = UIButton(type: .system)
-        registerButton.setTitle("Register", for: .normal)
-        registerButton.addTarget(self, action: #selector(handleRegister), for: .touchUpInside)
-        registerButton.setTitleColor(ThemeColor.thirdColor, for: .normal)
-
-        let buttonStackView = UIStackView(arrangedSubviews: [loginButton, registerButton])
-        buttonStackView.axis = .horizontal
-        buttonStackView.distribution = .fillEqually
-        buttonStackView.spacing = 10
-
-        loginStackView.addArrangedSubview(usernameTextField)
-        loginStackView.addArrangedSubview(passwordTextField)
-        loginStackView.addArrangedSubview(buttonStackView)
-    }
 
     private func bindEntitiesManager() {
         EntitiesManager.shared.$currentUser
@@ -200,12 +215,14 @@ class ProfileViewController: UIViewController {
         usernameLabel.text = "Username: \(user.username)"
         quoteCountLabel.text = "Created Quotes: \(user.createdQuotes.count)"
         loginStackView.isHidden = true
+        logoutButton.isHidden = false
         profileImageView.tintColor = .systemBlue
     }
 
     private func updateUIForLoggedOutState() {
         usernameLabel.text = nil
         quoteCountLabel.text = nil
+        logoutButton.isHidden = true
         loginStackView.isHidden = false
         profileImageView.tintColor = .gray
     }
@@ -228,6 +245,12 @@ class ProfileViewController: UIViewController {
             }
         }
     }
+    
+    @objc private func handleLogout() {
+           EntitiesManager.shared.currentUser = "UnknownUser"
+           updateUIForLoggedOutState()
+           print("User logged out")
+       }
     
     @objc private func handleRegister() {
         guard let username = usernameTextField.text, !username.isEmpty,
