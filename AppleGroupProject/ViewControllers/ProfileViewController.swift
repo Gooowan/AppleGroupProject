@@ -185,6 +185,11 @@ class ProfileViewController: UIViewController {
         }
 
         print("Searching for current user: \(EntitiesManager.shared.currentUser)")
+        
+        if EntitiesManager.shared.users.isEmpty {
+            EntitiesManager.shared.loadUsers()
+        }
+
         guard let user = EntitiesManager.shared.users.first(where: { $0.username == EntitiesManager.shared.currentUser }) else {
             print("No matching user found for \(EntitiesManager.shared.currentUser)")
             updateUIForLoggedOutState()
@@ -212,13 +217,13 @@ class ProfileViewController: UIViewController {
             return
         }
 
-        EntitiesManager.shared.logUser(user: username, password: password) { success in
+        EntitiesManager.shared.logUser(user: username, password: password) { [weak self] success in
             DispatchQueue.main.async {
                 if success {
-                    EntitiesManager.shared.currentUser = username
-                    self.updateUIForLoggedInState()
+                    EntitiesManager.shared.loadUsers()
+                    self?.updateUIForLoggedInState()
                 } else {
-                    self.showAlert(message: "Invalid email or password.")
+                    self?.showAlert(message: "Invalid email or password.")
                 }
             }
         }

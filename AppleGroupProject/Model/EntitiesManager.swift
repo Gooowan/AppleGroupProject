@@ -87,14 +87,26 @@ final class EntitiesManager {
                     print("Login process completed.")
                 }
             }, receiveValue: { [weak self] isSuccess in
-                if isSuccess {
-                    DispatchQueue.main.async {
+                DispatchQueue.main.async {
+                    if isSuccess {
                         self?.currentUser = user
+                        print("Logged in as \(user)")
+                        if !(self?.users.contains { $0.username == user } ?? false) {
+                            let loggedInUser = User(
+                                id: UUID().uuidString,
+                                username: user,
+                                password: password,
+                                likedQuotes: [],
+                                createdQuotes: []
+                            )
+                            self?.users.append(loggedInUser)
+                            print("Added \(user) to users array")
+                        }
                         completion(true)
+                    } else {
+                        print("Failed to log in as \(user)")
+                        completion(false)
                     }
-                } else {
-                    print("Failed to log in as \(user)")
-                    completion(false)
                 }
             })
             .store(in: &cancellables)
