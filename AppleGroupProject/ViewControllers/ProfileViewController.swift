@@ -37,13 +37,13 @@ class ProfileViewController: UIViewController {
     }()
     
     private let logoutButton: UIButton = {
-            let button = UIButton(type: .system)
-            button.setTitle("Logout", for: .normal)
-            button.setTitleColor(.red, for: .normal)
-            button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
-            button.isHidden = true
-            return button
-        }()
+        let button = UIButton(type: .system)
+        button.setTitle("Logout", for: .normal)
+        button.setTitleColor(.red, for: .normal)
+        button.addTarget(self, action: #selector(handleLogout), for: .touchUpInside)
+        button.isHidden = true
+        return button
+    }()
 
     private var usernameTextField: UITextField = {
         let textField = UITextField()

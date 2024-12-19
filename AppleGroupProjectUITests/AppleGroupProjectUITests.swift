@@ -10,10 +10,33 @@ final class AppleGroupProjectUITests: XCTestCase {
     }
     
     func testAddQuoteSuccess() throws {
-        app.navigationBars["Saved Quotes"].buttons["Add"].tap()
+        app.tabBars.buttons["Profile"].tap()
+            
+        let usernameTextField = app.textFields["Username"]
+        let passwordTextField = app.textFields["Password"]
+        let registerButton = app.buttons["Register"]
+        
+        XCTAssertTrue(usernameTextField.exists)
+        XCTAssertTrue(passwordTextField.exists)
+        XCTAssertTrue(registerButton.exists)
+        
+        usernameTextField.tap()
+        usernameTextField.typeText("testUser1")
+        passwordTextField.tap()
+        passwordTextField.typeText("pass123")
+        
+        registerButton.tap()
+        
+        let registrationSuccessAlert = app.alerts["Success"]
+        XCTAssertTrue(registrationSuccessAlert.exists)
+        XCTAssertEqual(registrationSuccessAlert.label, "Success")
+        
+        registrationSuccessAlert.buttons["OK"].tap()
+        
+        app.tabBars.buttons["All Quotes"].tap()
+        app.navigationBars["All Quotes"].buttons["Add"].tap()
 
         let quoteTextView = app.textViews["quoteTextView"]
-        let authorTextField = app.textFields["authorTextField"]
         let genreTextField = app.textFields["genreTextField"]
 
         XCTAssertTrue(quoteTextView.exists)
@@ -35,24 +58,24 @@ final class AppleGroupProjectUITests: XCTestCase {
     }
     
     func testAddQuoteError() throws {
-        app.navigationBars["Saved Quotes"].buttons["Add"].tap()
+        app.navigationBars["All Quotes"].buttons["Add"].tap()
         app.buttons["saveButton"].tap()
 
         let errorAlert = app.alerts["Error"]
         XCTAssertEqual(errorAlert.exists, true)
         XCTAssertEqual(errorAlert.label, "Error")
 
-        XCTAssertEqual(errorAlert.staticTexts["Please fill in all fields: quote, author, and genre."].exists, true)
+        XCTAssertEqual(errorAlert.staticTexts["Please log in to add a quote."].exists, true)
 
         errorAlert.buttons["OK"].tap()
         XCTAssertEqual(errorAlert.exists, false)
     }
     
     func testAddQuoteCancel() throws {
-        app.navigationBars["Saved Quotes"].buttons["Add"].tap()
+        app.navigationBars["All Quotes"].buttons["Add"].tap()
         XCTAssertEqual(app.navigationBars["Add Quote"].exists, true)
         app.buttons["closeButton"].tap()
-        XCTAssertEqual(app.navigationBars["Saved Quotes"].exists, true)
+        XCTAssertEqual(app.navigationBars["All Quotes"].exists, true)
     }
     
     func testSearchQuote() throws {
